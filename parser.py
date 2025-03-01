@@ -15,6 +15,7 @@ precedence = (
 # Definición de la gramática
 def p_module(p):
     '''module : MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULE'''
+    print('module >> ')
     p[0] = ('module', p[2], p[4], p[7])
 
 def p_port_list(p):
@@ -23,7 +24,7 @@ def p_port_list(p):
     if len(p) == 2:
         p[0] = [p[1]]
     else:
-        p[0].append(p[3])
+        p[0] = p[1] + [p[3]]
 
 def p_port(p):
     '''port : INPUT IDENTIFIER
@@ -36,7 +37,7 @@ def p_module_items(p):
     if len(p) == 2:
         p[0] = [p[1]]
     else:
-        p[0].append(p[2])
+        p[0] = p[1] + [p[2]]
 
 def p_module_item(p):
     '''module_item : statement
@@ -51,8 +52,9 @@ def p_declaration(p):
 def p_statement(p):
     '''statement : assignment
                  | if_statement
-                 | case_statement
                  | always_statement'''
+    
+                #  | case_statement
     p[0] = p[1]
 
 def p_assignment(p):
@@ -67,21 +69,25 @@ def p_if_statement(p):
     else:
         p[0] = ('if', p[3], p[5], p[7])
 
-def p_case_statement(p):
-    '''case_statement : CASE expression case_items ENDCASE'''
-    p[0] = ('case', p[2], p[3])
+# def p_case_statement(p):
+#     '''case_statement : CASE expression case_items ENDCASE'''
+#     p[0] = ('case', p[2], p[3])
 
-def p_case_items(p):
-    '''case_items : case_item
-                  | case_items case_item'''
-    if len(p) == 2:
-        p[0] = [p[1]]
-    else:
-        p[0].append(p[2])
+# def p_case_items(p):
+#     '''case_items : case_item
+#                   | case_items case_item'''
+#     if len(p) == 2:
+#         p[0] = [p[1]]
+#     else:
+#         p[0] = p[1] + [p[2]]
 
-def p_case_item(p):
-    '''case_item : expression COLON statement'''
-    p[0] = (p[1], p[3])
+# def p_case_item(p):
+#     '''case_item : expression COLON statement
+#                  | DEFAULT COLON statement'''
+#     if len(p) == 4:
+#         p[0] = (p[1], p[3])
+#     else:
+#         p[0] = ('default', p[3])
 
 def p_always_statement(p):
     '''always_statement : ALWAYS statement'''
