@@ -1,5 +1,6 @@
-from simulide import package
+import simulide 
 
-package1 = package('my_package', ['A', 'B'], ['C', 'D'])
+component = simulide.Component('my_package', ['A', 'B'], ['C', 'D'])
 
-package1.create()
+component.create_package()
+component.create_mcu()
