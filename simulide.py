@@ -77,10 +77,34 @@ class Component():
 
     def create_script(self):
         with open("{}.as".format(self.name), "w") as f:
+            # inputs and outputs
             for input in self.inputs:
                 f.write('IoPin@ {}Pin = component.getPin("{}");\n'.format(input, input))
             for output in self.outputs:
                 f.write('IoPin@ {}Pin = component.getPin("{}");\n'.format(output, output))
 
-            f.write('\nvoid setup()')#\n\{\n\tprint("{} setup()");\n\}'.format(self.name))
-            # f.write("// Aquí puedes agregar el contenido del script.\n"
+            # block_implementation function prototype
+            f.write('\nvoid block_implementation(void);\n')
+
+
+            # setup function
+            f.write('\nvoid setup()\n{{\n\tprint("{} setup()");\n}}'.format(self.name))
+            
+            # reset function
+            f.write('\n\nvoid reset()\n{{\n\tprint("{} reset()");\n\n'.format(self.name))
+            for input in self.inputs:
+                f.write('\t{}Pin.setPinMode( 1 ); // Input\n'.format(input))
+            for output in self.outputs:
+                f.write('\t{}Pin.setPinMode( 3 ); // Output\n'.format(output))
+            f.write('\n')    
+            for input in self.inputs:
+                f.write('\t{}Pin.changeCallBack( element, true );\n'.format(input))
+            f.write('\n')
+            for output in self.outputs:
+                f.write('\t{}Pin.setVoltage( 0 )\n'.format(output))
+            f.write('}\n')
+
+            # voltChanged function
+            f.write('\n\nvoid voltChanged()\n{\n\tblock_implementation();\n}\n\n')
+
+
