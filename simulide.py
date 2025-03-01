@@ -12,8 +12,14 @@ class package():
 
         for index, value in enumerate(self.inputs):
             pin = ET.SubElement(packageB, "pin", 
-                                param1=f"p{index}1", 
-                                param2=f"p{index}2")
+                                type="",
+                                xpos="-8",
+                                ypos="{}".format(8+(index*8)),
+                                angle="180",
+                                length="8",  
+                                space="0",   
+                                id="{value}",     
+                                label="{value}")
 
 
         # Crear un árbol de elementos
