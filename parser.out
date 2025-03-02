@@ -1,0 +1,2524 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ALWAYS
+    BEGIN
+    CASE
+    DEFAULT
+    ELSE
+    END
+    ENDCASE
+    ENDFUNCTION
+    ENDTASK
+    FOR
+    FOREVER
+    FUNCTION
+    IF
+    INITIAL
+    LBRACE
+    NEGEDGE
+    POSEDGE
+    RBRACE
+    REG
+    REPEAT
+    TASK
+    WHILE
+
+Grammar
+
+Rule 0     S' -> module
+Rule 1     module -> MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULE
+Rule 2     port_list -> port
+Rule 3     port_list -> port_list COMMA port
+Rule 4     port -> INPUT IDENTIFIER
+Rule 5     port -> OUTPUT IDENTIFIER
+Rule 6     module_items -> module_item
+Rule 7     module_items -> module_items module_item
+Rule 8     module_item -> wire_declaration
+Rule 9     module_item -> assignment
+Rule 10    wire_declaration -> WIRE IDENTIFIER SEMI
+Rule 11    assignment -> ASSIGN IDENTIFIER EQ expression SEMI
+Rule 12    expression -> expression PLUS expression
+Rule 13    expression -> expression MINUS expression
+Rule 14    expression -> expression TIMES expression
+Rule 15    expression -> expression DIVIDE expression
+Rule 16    expression -> expression AND expression
+Rule 17    expression -> expression OR expression
+Rule 18    expression -> expression EQEQ expression
+Rule 19    expression -> expression NEQ expression
+Rule 20    expression -> expression LT expression
+Rule 21    expression -> expression LE expression
+Rule 22    expression -> expression GT expression
+Rule 23    expression -> expression GE expression
+Rule 24    expression -> expression BITAND expression
+Rule 25    expression -> expression BITOR expression
+Rule 26    expression -> expression BITXOR expression
+Rule 27    expression -> expression LSHIFT expression
+Rule 28    expression -> expression RSHIFT expression
+Rule 29    expression -> MINUS expression
+Rule 30    expression -> NOT expression
+Rule 31    expression -> BITNOT expression
+Rule 32    expression -> LPAREN expression RPAREN
+Rule 33    expression -> NUMBER
+Rule 34    expression -> IDENTIFIER
+
+Terminals, with rules where they appear
+
+ALWAYS               : 
+AND                  : 16
+ASSIGN               : 11
+BEGIN                : 
+BITAND               : 24
+BITNOT               : 31
+BITOR                : 25
+BITXOR               : 26
+CASE                 : 
+COMMA                : 3
+DEFAULT              : 
+DIVIDE               : 15
+ELSE                 : 
+END                  : 
+ENDCASE              : 
+ENDFUNCTION          : 
+ENDMODULE            : 1
+ENDTASK              : 
+EQ                   : 11
+EQEQ                 : 18
+FOR                  : 
+FOREVER              : 
+FUNCTION             : 
+GE                   : 23
+GT                   : 22
+IDENTIFIER           : 1 4 5 10 11 34
+IF                   : 
+INITIAL              : 
+INPUT                : 4
+LBRACE               : 
+LE                   : 21
+LPAREN               : 1 32
+LSHIFT               : 27
+LT                   : 20
+MINUS                : 13 29
+MODULE               : 1
+NEGEDGE              : 
+NEQ                  : 19
+NOT                  : 30
+NUMBER               : 33
+OR                   : 17
+OUTPUT               : 5
+PLUS                 : 12
+POSEDGE              : 
+RBRACE               : 
+REG                  : 
+REPEAT               : 
+RPAREN               : 1 32
+RSHIFT               : 28
+SEMI                 : 1 10 11
+TASK                 : 
+TIMES                : 14
+WHILE                : 
+WIRE                 : 10
+error                : 
+
+Nonterminals, with rules where they appear
+
+assignment           : 9
+expression           : 11 12 12 13 13 14 14 15 15 16 16 17 17 18 18 19 19 20 20 21 21 22 22 23 23 24 24 25 25 26 26 27 27 28 28 29 30 31 32
+module               : 0
+module_item          : 6 7
+module_items         : 1 7
+port                 : 2 3
+port_list            : 1 3
+wire_declaration     : 8
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . module
+    (1) module -> . MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULE
+
+    MODULE          shift and go to state 2
+
+    module                         shift and go to state 1
+
+state 1
+
+    (0) S' -> module .
+
+
+
+state 2
+
+    (1) module -> MODULE . IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULE
+
+    IDENTIFIER      shift and go to state 3
+
+
+state 3
+
+    (1) module -> MODULE IDENTIFIER . LPAREN port_list RPAREN SEMI module_items ENDMODULE
+
+    LPAREN          shift and go to state 4
+
+
+state 4
+
+    (1) module -> MODULE IDENTIFIER LPAREN . port_list RPAREN SEMI module_items ENDMODULE
+    (2) port_list -> . port
+    (3) port_list -> . port_list COMMA port
+    (4) port -> . INPUT IDENTIFIER
+    (5) port -> . OUTPUT IDENTIFIER
+
+    INPUT           shift and go to state 7
+    OUTPUT          shift and go to state 8
+
+    port_list                      shift and go to state 5
+    port                           shift and go to state 6
+
+state 5
+
+    (1) module -> MODULE IDENTIFIER LPAREN port_list . RPAREN SEMI module_items ENDMODULE
+    (3) port_list -> port_list . COMMA port
+
+    RPAREN          shift and go to state 9
+    COMMA           shift and go to state 10
+
+
+state 6
+
+    (2) port_list -> port .
+
+    RPAREN          reduce using rule 2 (port_list -> port .)
+    COMMA           reduce using rule 2 (port_list -> port .)
+
+
+state 7
+
+    (4) port -> INPUT . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 11
+
+
+state 8
+
+    (5) port -> OUTPUT . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 12
+
+
+state 9
+
+    (1) module -> MODULE IDENTIFIER LPAREN port_list RPAREN . SEMI module_items ENDMODULE
+
+    SEMI            shift and go to state 13
+
+
+state 10
+
+    (3) port_list -> port_list COMMA . port
+    (4) port -> . INPUT IDENTIFIER
+    (5) port -> . OUTPUT IDENTIFIER
+
+    INPUT           shift and go to state 7
+    OUTPUT          shift and go to state 8
+
+    port                           shift and go to state 14
+
+state 11
+
+    (4) port -> INPUT IDENTIFIER .
+
+    RPAREN          reduce using rule 4 (port -> INPUT IDENTIFIER .)
+    COMMA           reduce using rule 4 (port -> INPUT IDENTIFIER .)
+
+
+state 12
+
+    (5) port -> OUTPUT IDENTIFIER .
+
+    RPAREN          reduce using rule 5 (port -> OUTPUT IDENTIFIER .)
+    COMMA           reduce using rule 5 (port -> OUTPUT IDENTIFIER .)
+
+
+state 13
+
+    (1) module -> MODULE IDENTIFIER LPAREN port_list RPAREN SEMI . module_items ENDMODULE
+    (6) module_items -> . module_item
+    (7) module_items -> . module_items module_item
+    (8) module_item -> . wire_declaration
+    (9) module_item -> . assignment
+    (10) wire_declaration -> . WIRE IDENTIFIER SEMI
+    (11) assignment -> . ASSIGN IDENTIFIER EQ expression SEMI
+
+    WIRE            shift and go to state 19
+    ASSIGN          shift and go to state 20
+
+    module_items                   shift and go to state 15
+    module_item                    shift and go to state 16
+    wire_declaration               shift and go to state 17
+    assignment                     shift and go to state 18
+
+state 14
+
+    (3) port_list -> port_list COMMA port .
+
+    RPAREN          reduce using rule 3 (port_list -> port_list COMMA port .)
+    COMMA           reduce using rule 3 (port_list -> port_list COMMA port .)
+
+
+state 15
+
+    (1) module -> MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items . ENDMODULE
+    (7) module_items -> module_items . module_item
+    (8) module_item -> . wire_declaration
+    (9) module_item -> . assignment
+    (10) wire_declaration -> . WIRE IDENTIFIER SEMI
+    (11) assignment -> . ASSIGN IDENTIFIER EQ expression SEMI
+
+    ENDMODULE       shift and go to state 21
+    WIRE            shift and go to state 19
+    ASSIGN          shift and go to state 20
+
+    module_item                    shift and go to state 22
+    wire_declaration               shift and go to state 17
+    assignment                     shift and go to state 18
+
+state 16
+
+    (6) module_items -> module_item .
+
+    ENDMODULE       reduce using rule 6 (module_items -> module_item .)
+    WIRE            reduce using rule 6 (module_items -> module_item .)
+    ASSIGN          reduce using rule 6 (module_items -> module_item .)
+
+
+state 17
+
+    (8) module_item -> wire_declaration .
+
+    ENDMODULE       reduce using rule 8 (module_item -> wire_declaration .)
+    WIRE            reduce using rule 8 (module_item -> wire_declaration .)
+    ASSIGN          reduce using rule 8 (module_item -> wire_declaration .)
+
+
+state 18
+
+    (9) module_item -> assignment .
+
+    ENDMODULE       reduce using rule 9 (module_item -> assignment .)
+    WIRE            reduce using rule 9 (module_item -> assignment .)
+    ASSIGN          reduce using rule 9 (module_item -> assignment .)
+
+
+state 19
+
+    (10) wire_declaration -> WIRE . IDENTIFIER SEMI
+
+    IDENTIFIER      shift and go to state 23
+
+
+state 20
+
+    (11) assignment -> ASSIGN . IDENTIFIER EQ expression SEMI
+
+    IDENTIFIER      shift and go to state 24
+
+
+state 21
+
+    (1) module -> MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULE .
+
+    $end            reduce using rule 1 (module -> MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULE .)
+
+
+state 22
+
+    (7) module_items -> module_items module_item .
+
+    ENDMODULE       reduce using rule 7 (module_items -> module_items module_item .)
+    WIRE            reduce using rule 7 (module_items -> module_items module_item .)
+    ASSIGN          reduce using rule 7 (module_items -> module_items module_item .)
+
+
+state 23
+
+    (10) wire_declaration -> WIRE IDENTIFIER . SEMI
+
+    SEMI            shift and go to state 25
+
+
+state 24
+
+    (11) assignment -> ASSIGN IDENTIFIER . EQ expression SEMI
+
+    EQ              shift and go to state 26
+
+
+state 25
+
+    (10) wire_declaration -> WIRE IDENTIFIER SEMI .
+
+    ENDMODULE       reduce using rule 10 (wire_declaration -> WIRE IDENTIFIER SEMI .)
+    WIRE            reduce using rule 10 (wire_declaration -> WIRE IDENTIFIER SEMI .)
+    ASSIGN          reduce using rule 10 (wire_declaration -> WIRE IDENTIFIER SEMI .)
+
+
+state 26
+
+    (11) assignment -> ASSIGN IDENTIFIER EQ . expression SEMI
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 28
+
+state 27
+
+    (34) expression -> IDENTIFIER .
+
+    SEMI            reduce using rule 34 (expression -> IDENTIFIER .)
+    PLUS            reduce using rule 34 (expression -> IDENTIFIER .)
+    MINUS           reduce using rule 34 (expression -> IDENTIFIER .)
+    TIMES           reduce using rule 34 (expression -> IDENTIFIER .)
+    DIVIDE          reduce using rule 34 (expression -> IDENTIFIER .)
+    AND             reduce using rule 34 (expression -> IDENTIFIER .)
+    OR              reduce using rule 34 (expression -> IDENTIFIER .)
+    EQEQ            reduce using rule 34 (expression -> IDENTIFIER .)
+    NEQ             reduce using rule 34 (expression -> IDENTIFIER .)
+    LT              reduce using rule 34 (expression -> IDENTIFIER .)
+    LE              reduce using rule 34 (expression -> IDENTIFIER .)
+    GT              reduce using rule 34 (expression -> IDENTIFIER .)
+    GE              reduce using rule 34 (expression -> IDENTIFIER .)
+    BITAND          reduce using rule 34 (expression -> IDENTIFIER .)
+    BITOR           reduce using rule 34 (expression -> IDENTIFIER .)
+    BITXOR          reduce using rule 34 (expression -> IDENTIFIER .)
+    LSHIFT          reduce using rule 34 (expression -> IDENTIFIER .)
+    RSHIFT          reduce using rule 34 (expression -> IDENTIFIER .)
+    RPAREN          reduce using rule 34 (expression -> IDENTIFIER .)
+
+
+state 28
+
+    (11) assignment -> ASSIGN IDENTIFIER EQ expression . SEMI
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            shift and go to state 34
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 36
+    TIMES           shift and go to state 37
+    DIVIDE          shift and go to state 38
+    AND             shift and go to state 39
+    OR              shift and go to state 40
+    EQEQ            shift and go to state 41
+    NEQ             shift and go to state 42
+    LT              shift and go to state 43
+    LE              shift and go to state 44
+    GT              shift and go to state 45
+    GE              shift and go to state 46
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+
+state 29
+
+    (29) expression -> MINUS . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 52
+
+state 30
+
+    (30) expression -> NOT . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 53
+
+state 31
+
+    (31) expression -> BITNOT . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 54
+
+state 32
+
+    (32) expression -> LPAREN . expression RPAREN
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 55
+
+state 33
+
+    (33) expression -> NUMBER .
+
+    SEMI            reduce using rule 33 (expression -> NUMBER .)
+    PLUS            reduce using rule 33 (expression -> NUMBER .)
+    MINUS           reduce using rule 33 (expression -> NUMBER .)
+    TIMES           reduce using rule 33 (expression -> NUMBER .)
+    DIVIDE          reduce using rule 33 (expression -> NUMBER .)
+    AND             reduce using rule 33 (expression -> NUMBER .)
+    OR              reduce using rule 33 (expression -> NUMBER .)
+    EQEQ            reduce using rule 33 (expression -> NUMBER .)
+    NEQ             reduce using rule 33 (expression -> NUMBER .)
+    LT              reduce using rule 33 (expression -> NUMBER .)
+    LE              reduce using rule 33 (expression -> NUMBER .)
+    GT              reduce using rule 33 (expression -> NUMBER .)
+    GE              reduce using rule 33 (expression -> NUMBER .)
+    BITAND          reduce using rule 33 (expression -> NUMBER .)
+    BITOR           reduce using rule 33 (expression -> NUMBER .)
+    BITXOR          reduce using rule 33 (expression -> NUMBER .)
+    LSHIFT          reduce using rule 33 (expression -> NUMBER .)
+    RSHIFT          reduce using rule 33 (expression -> NUMBER .)
+    RPAREN          reduce using rule 33 (expression -> NUMBER .)
+
+
+state 34
+
+    (11) assignment -> ASSIGN IDENTIFIER EQ expression SEMI .
+
+    ENDMODULE       reduce using rule 11 (assignment -> ASSIGN IDENTIFIER EQ expression SEMI .)
+    WIRE            reduce using rule 11 (assignment -> ASSIGN IDENTIFIER EQ expression SEMI .)
+    ASSIGN          reduce using rule 11 (assignment -> ASSIGN IDENTIFIER EQ expression SEMI .)
+
+
+state 35
+
+    (12) expression -> expression PLUS . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 56
+
+state 36
+
+    (13) expression -> expression MINUS . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 57
+
+state 37
+
+    (14) expression -> expression TIMES . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 58
+
+state 38
+
+    (15) expression -> expression DIVIDE . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 59
+
+state 39
+
+    (16) expression -> expression AND . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 60
+
+state 40
+
+    (17) expression -> expression OR . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 61
+
+state 41
+
+    (18) expression -> expression EQEQ . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 62
+
+state 42
+
+    (19) expression -> expression NEQ . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 63
+
+state 43
+
+    (20) expression -> expression LT . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 64
+
+state 44
+
+    (21) expression -> expression LE . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 65
+
+state 45
+
+    (22) expression -> expression GT . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 66
+
+state 46
+
+    (23) expression -> expression GE . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 67
+
+state 47
+
+    (24) expression -> expression BITAND . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 68
+
+state 48
+
+    (25) expression -> expression BITOR . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 69
+
+state 49
+
+    (26) expression -> expression BITXOR . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 70
+
+state 50
+
+    (27) expression -> expression LSHIFT . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 71
+
+state 51
+
+    (28) expression -> expression RSHIFT . expression
+    (12) expression -> . expression PLUS expression
+    (13) expression -> . expression MINUS expression
+    (14) expression -> . expression TIMES expression
+    (15) expression -> . expression DIVIDE expression
+    (16) expression -> . expression AND expression
+    (17) expression -> . expression OR expression
+    (18) expression -> . expression EQEQ expression
+    (19) expression -> . expression NEQ expression
+    (20) expression -> . expression LT expression
+    (21) expression -> . expression LE expression
+    (22) expression -> . expression GT expression
+    (23) expression -> . expression GE expression
+    (24) expression -> . expression BITAND expression
+    (25) expression -> . expression BITOR expression
+    (26) expression -> . expression BITXOR expression
+    (27) expression -> . expression LSHIFT expression
+    (28) expression -> . expression RSHIFT expression
+    (29) expression -> . MINUS expression
+    (30) expression -> . NOT expression
+    (31) expression -> . BITNOT expression
+    (32) expression -> . LPAREN expression RPAREN
+    (33) expression -> . NUMBER
+    (34) expression -> . IDENTIFIER
+
+    MINUS           shift and go to state 29
+    NOT             shift and go to state 30
+    BITNOT          shift and go to state 31
+    LPAREN          shift and go to state 32
+    NUMBER          shift and go to state 33
+    IDENTIFIER      shift and go to state 27
+
+    expression                     shift and go to state 72
+
+state 52
+
+    (29) expression -> MINUS expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 29 (expression -> MINUS expression .)
+    PLUS            reduce using rule 29 (expression -> MINUS expression .)
+    MINUS           reduce using rule 29 (expression -> MINUS expression .)
+    TIMES           reduce using rule 29 (expression -> MINUS expression .)
+    DIVIDE          reduce using rule 29 (expression -> MINUS expression .)
+    AND             reduce using rule 29 (expression -> MINUS expression .)
+    OR              reduce using rule 29 (expression -> MINUS expression .)
+    EQEQ            reduce using rule 29 (expression -> MINUS expression .)
+    NEQ             reduce using rule 29 (expression -> MINUS expression .)
+    LT              reduce using rule 29 (expression -> MINUS expression .)
+    LE              reduce using rule 29 (expression -> MINUS expression .)
+    GT              reduce using rule 29 (expression -> MINUS expression .)
+    GE              reduce using rule 29 (expression -> MINUS expression .)
+    BITAND          reduce using rule 29 (expression -> MINUS expression .)
+    BITOR           reduce using rule 29 (expression -> MINUS expression .)
+    BITXOR          reduce using rule 29 (expression -> MINUS expression .)
+    LSHIFT          reduce using rule 29 (expression -> MINUS expression .)
+    RSHIFT          reduce using rule 29 (expression -> MINUS expression .)
+    RPAREN          reduce using rule 29 (expression -> MINUS expression .)
+
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+  ! LT              [ shift and go to state 43 ]
+  ! LE              [ shift and go to state 44 ]
+  ! GT              [ shift and go to state 45 ]
+  ! GE              [ shift and go to state 46 ]
+  ! BITAND          [ shift and go to state 47 ]
+  ! BITOR           [ shift and go to state 48 ]
+  ! BITXOR          [ shift and go to state 49 ]
+  ! LSHIFT          [ shift and go to state 50 ]
+  ! RSHIFT          [ shift and go to state 51 ]
+
+
+state 53
+
+    (30) expression -> NOT expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 30 (expression -> NOT expression .)
+    PLUS            reduce using rule 30 (expression -> NOT expression .)
+    MINUS           reduce using rule 30 (expression -> NOT expression .)
+    TIMES           reduce using rule 30 (expression -> NOT expression .)
+    DIVIDE          reduce using rule 30 (expression -> NOT expression .)
+    AND             reduce using rule 30 (expression -> NOT expression .)
+    OR              reduce using rule 30 (expression -> NOT expression .)
+    EQEQ            reduce using rule 30 (expression -> NOT expression .)
+    NEQ             reduce using rule 30 (expression -> NOT expression .)
+    LT              reduce using rule 30 (expression -> NOT expression .)
+    LE              reduce using rule 30 (expression -> NOT expression .)
+    GT              reduce using rule 30 (expression -> NOT expression .)
+    GE              reduce using rule 30 (expression -> NOT expression .)
+    BITAND          reduce using rule 30 (expression -> NOT expression .)
+    BITOR           reduce using rule 30 (expression -> NOT expression .)
+    BITXOR          reduce using rule 30 (expression -> NOT expression .)
+    LSHIFT          reduce using rule 30 (expression -> NOT expression .)
+    RSHIFT          reduce using rule 30 (expression -> NOT expression .)
+    RPAREN          reduce using rule 30 (expression -> NOT expression .)
+
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+  ! LT              [ shift and go to state 43 ]
+  ! LE              [ shift and go to state 44 ]
+  ! GT              [ shift and go to state 45 ]
+  ! GE              [ shift and go to state 46 ]
+  ! BITAND          [ shift and go to state 47 ]
+  ! BITOR           [ shift and go to state 48 ]
+  ! BITXOR          [ shift and go to state 49 ]
+  ! LSHIFT          [ shift and go to state 50 ]
+  ! RSHIFT          [ shift and go to state 51 ]
+
+
+state 54
+
+    (31) expression -> BITNOT expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 31 (expression -> BITNOT expression .)
+    PLUS            reduce using rule 31 (expression -> BITNOT expression .)
+    MINUS           reduce using rule 31 (expression -> BITNOT expression .)
+    TIMES           reduce using rule 31 (expression -> BITNOT expression .)
+    DIVIDE          reduce using rule 31 (expression -> BITNOT expression .)
+    AND             reduce using rule 31 (expression -> BITNOT expression .)
+    OR              reduce using rule 31 (expression -> BITNOT expression .)
+    EQEQ            reduce using rule 31 (expression -> BITNOT expression .)
+    NEQ             reduce using rule 31 (expression -> BITNOT expression .)
+    LT              reduce using rule 31 (expression -> BITNOT expression .)
+    LE              reduce using rule 31 (expression -> BITNOT expression .)
+    GT              reduce using rule 31 (expression -> BITNOT expression .)
+    GE              reduce using rule 31 (expression -> BITNOT expression .)
+    BITAND          reduce using rule 31 (expression -> BITNOT expression .)
+    BITOR           reduce using rule 31 (expression -> BITNOT expression .)
+    BITXOR          reduce using rule 31 (expression -> BITNOT expression .)
+    LSHIFT          reduce using rule 31 (expression -> BITNOT expression .)
+    RSHIFT          reduce using rule 31 (expression -> BITNOT expression .)
+    RPAREN          reduce using rule 31 (expression -> BITNOT expression .)
+
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+  ! LT              [ shift and go to state 43 ]
+  ! LE              [ shift and go to state 44 ]
+  ! GT              [ shift and go to state 45 ]
+  ! GE              [ shift and go to state 46 ]
+  ! BITAND          [ shift and go to state 47 ]
+  ! BITOR           [ shift and go to state 48 ]
+  ! BITXOR          [ shift and go to state 49 ]
+  ! LSHIFT          [ shift and go to state 50 ]
+  ! RSHIFT          [ shift and go to state 51 ]
+
+
+state 55
+
+    (32) expression -> LPAREN expression . RPAREN
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    RPAREN          shift and go to state 73
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 36
+    TIMES           shift and go to state 37
+    DIVIDE          shift and go to state 38
+    AND             shift and go to state 39
+    OR              shift and go to state 40
+    EQEQ            shift and go to state 41
+    NEQ             shift and go to state 42
+    LT              shift and go to state 43
+    LE              shift and go to state 44
+    GT              shift and go to state 45
+    GE              shift and go to state 46
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+
+state 56
+
+    (12) expression -> expression PLUS expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 12 (expression -> expression PLUS expression .)
+    PLUS            reduce using rule 12 (expression -> expression PLUS expression .)
+    MINUS           reduce using rule 12 (expression -> expression PLUS expression .)
+    RPAREN          reduce using rule 12 (expression -> expression PLUS expression .)
+    TIMES           shift and go to state 37
+    DIVIDE          shift and go to state 38
+    AND             shift and go to state 39
+    OR              shift and go to state 40
+    EQEQ            shift and go to state 41
+    NEQ             shift and go to state 42
+    LT              shift and go to state 43
+    LE              shift and go to state 44
+    GT              shift and go to state 45
+    GE              shift and go to state 46
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! TIMES           [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! DIVIDE          [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! AND             [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! OR              [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! EQEQ            [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! NEQ             [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! LT              [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! LE              [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! GT              [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! GE              [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! BITAND          [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! BITOR           [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! BITXOR          [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! LSHIFT          [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! RSHIFT          [ reduce using rule 12 (expression -> expression PLUS expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+
+
+state 57
+
+    (13) expression -> expression MINUS expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 13 (expression -> expression MINUS expression .)
+    PLUS            reduce using rule 13 (expression -> expression MINUS expression .)
+    MINUS           reduce using rule 13 (expression -> expression MINUS expression .)
+    RPAREN          reduce using rule 13 (expression -> expression MINUS expression .)
+    TIMES           shift and go to state 37
+    DIVIDE          shift and go to state 38
+    AND             shift and go to state 39
+    OR              shift and go to state 40
+    EQEQ            shift and go to state 41
+    NEQ             shift and go to state 42
+    LT              shift and go to state 43
+    LE              shift and go to state 44
+    GT              shift and go to state 45
+    GE              shift and go to state 46
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! TIMES           [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! DIVIDE          [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! AND             [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! OR              [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! EQEQ            [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! NEQ             [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! LT              [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! LE              [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! GT              [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! GE              [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! BITAND          [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! BITOR           [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! BITXOR          [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! LSHIFT          [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! RSHIFT          [ reduce using rule 13 (expression -> expression MINUS expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+
+
+state 58
+
+    (14) expression -> expression TIMES expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 14 (expression -> expression TIMES expression .)
+    PLUS            reduce using rule 14 (expression -> expression TIMES expression .)
+    MINUS           reduce using rule 14 (expression -> expression TIMES expression .)
+    TIMES           reduce using rule 14 (expression -> expression TIMES expression .)
+    DIVIDE          reduce using rule 14 (expression -> expression TIMES expression .)
+    RPAREN          reduce using rule 14 (expression -> expression TIMES expression .)
+    AND             shift and go to state 39
+    OR              shift and go to state 40
+    EQEQ            shift and go to state 41
+    NEQ             shift and go to state 42
+    LT              shift and go to state 43
+    LE              shift and go to state 44
+    GT              shift and go to state 45
+    GE              shift and go to state 46
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! AND             [ reduce using rule 14 (expression -> expression TIMES expression .) ]
+  ! OR              [ reduce using rule 14 (expression -> expression TIMES expression .) ]
+  ! EQEQ            [ reduce using rule 14 (expression -> expression TIMES expression .) ]
+  ! NEQ             [ reduce using rule 14 (expression -> expression TIMES expression .) ]
+  ! LT              [ reduce using rule 14 (expression -> expression TIMES expression .) ]
+  ! LE              [ reduce using rule 14 (expression -> expression TIMES expression .) ]
+  ! GT              [ reduce using rule 14 (expression -> expression TIMES expression .) ]
+  ! GE              [ reduce using rule 14 (expression -> expression TIMES expression .) ]
+  ! BITAND          [ reduce using rule 14 (expression -> expression TIMES expression .) ]
+  ! BITOR           [ reduce using rule 14 (expression -> expression TIMES expression .) ]
+  ! BITXOR          [ reduce using rule 14 (expression -> expression TIMES expression .) ]
+  ! LSHIFT          [ reduce using rule 14 (expression -> expression TIMES expression .) ]
+  ! RSHIFT          [ reduce using rule 14 (expression -> expression TIMES expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+
+
+state 59
+
+    (15) expression -> expression DIVIDE expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 15 (expression -> expression DIVIDE expression .)
+    PLUS            reduce using rule 15 (expression -> expression DIVIDE expression .)
+    MINUS           reduce using rule 15 (expression -> expression DIVIDE expression .)
+    TIMES           reduce using rule 15 (expression -> expression DIVIDE expression .)
+    DIVIDE          reduce using rule 15 (expression -> expression DIVIDE expression .)
+    RPAREN          reduce using rule 15 (expression -> expression DIVIDE expression .)
+    AND             shift and go to state 39
+    OR              shift and go to state 40
+    EQEQ            shift and go to state 41
+    NEQ             shift and go to state 42
+    LT              shift and go to state 43
+    LE              shift and go to state 44
+    GT              shift and go to state 45
+    GE              shift and go to state 46
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! AND             [ reduce using rule 15 (expression -> expression DIVIDE expression .) ]
+  ! OR              [ reduce using rule 15 (expression -> expression DIVIDE expression .) ]
+  ! EQEQ            [ reduce using rule 15 (expression -> expression DIVIDE expression .) ]
+  ! NEQ             [ reduce using rule 15 (expression -> expression DIVIDE expression .) ]
+  ! LT              [ reduce using rule 15 (expression -> expression DIVIDE expression .) ]
+  ! LE              [ reduce using rule 15 (expression -> expression DIVIDE expression .) ]
+  ! GT              [ reduce using rule 15 (expression -> expression DIVIDE expression .) ]
+  ! GE              [ reduce using rule 15 (expression -> expression DIVIDE expression .) ]
+  ! BITAND          [ reduce using rule 15 (expression -> expression DIVIDE expression .) ]
+  ! BITOR           [ reduce using rule 15 (expression -> expression DIVIDE expression .) ]
+  ! BITXOR          [ reduce using rule 15 (expression -> expression DIVIDE expression .) ]
+  ! LSHIFT          [ reduce using rule 15 (expression -> expression DIVIDE expression .) ]
+  ! RSHIFT          [ reduce using rule 15 (expression -> expression DIVIDE expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+
+
+state 60
+
+    (16) expression -> expression AND expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 16 (expression -> expression AND expression .)
+    PLUS            reduce using rule 16 (expression -> expression AND expression .)
+    MINUS           reduce using rule 16 (expression -> expression AND expression .)
+    TIMES           reduce using rule 16 (expression -> expression AND expression .)
+    DIVIDE          reduce using rule 16 (expression -> expression AND expression .)
+    AND             reduce using rule 16 (expression -> expression AND expression .)
+    OR              reduce using rule 16 (expression -> expression AND expression .)
+    RPAREN          reduce using rule 16 (expression -> expression AND expression .)
+    EQEQ            shift and go to state 41
+    NEQ             shift and go to state 42
+    LT              shift and go to state 43
+    LE              shift and go to state 44
+    GT              shift and go to state 45
+    GE              shift and go to state 46
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! EQEQ            [ reduce using rule 16 (expression -> expression AND expression .) ]
+  ! NEQ             [ reduce using rule 16 (expression -> expression AND expression .) ]
+  ! LT              [ reduce using rule 16 (expression -> expression AND expression .) ]
+  ! LE              [ reduce using rule 16 (expression -> expression AND expression .) ]
+  ! GT              [ reduce using rule 16 (expression -> expression AND expression .) ]
+  ! GE              [ reduce using rule 16 (expression -> expression AND expression .) ]
+  ! BITAND          [ reduce using rule 16 (expression -> expression AND expression .) ]
+  ! BITOR           [ reduce using rule 16 (expression -> expression AND expression .) ]
+  ! BITXOR          [ reduce using rule 16 (expression -> expression AND expression .) ]
+  ! LSHIFT          [ reduce using rule 16 (expression -> expression AND expression .) ]
+  ! RSHIFT          [ reduce using rule 16 (expression -> expression AND expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+
+
+state 61
+
+    (17) expression -> expression OR expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 17 (expression -> expression OR expression .)
+    PLUS            reduce using rule 17 (expression -> expression OR expression .)
+    MINUS           reduce using rule 17 (expression -> expression OR expression .)
+    TIMES           reduce using rule 17 (expression -> expression OR expression .)
+    DIVIDE          reduce using rule 17 (expression -> expression OR expression .)
+    AND             reduce using rule 17 (expression -> expression OR expression .)
+    OR              reduce using rule 17 (expression -> expression OR expression .)
+    RPAREN          reduce using rule 17 (expression -> expression OR expression .)
+    EQEQ            shift and go to state 41
+    NEQ             shift and go to state 42
+    LT              shift and go to state 43
+    LE              shift and go to state 44
+    GT              shift and go to state 45
+    GE              shift and go to state 46
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! EQEQ            [ reduce using rule 17 (expression -> expression OR expression .) ]
+  ! NEQ             [ reduce using rule 17 (expression -> expression OR expression .) ]
+  ! LT              [ reduce using rule 17 (expression -> expression OR expression .) ]
+  ! LE              [ reduce using rule 17 (expression -> expression OR expression .) ]
+  ! GT              [ reduce using rule 17 (expression -> expression OR expression .) ]
+  ! GE              [ reduce using rule 17 (expression -> expression OR expression .) ]
+  ! BITAND          [ reduce using rule 17 (expression -> expression OR expression .) ]
+  ! BITOR           [ reduce using rule 17 (expression -> expression OR expression .) ]
+  ! BITXOR          [ reduce using rule 17 (expression -> expression OR expression .) ]
+  ! LSHIFT          [ reduce using rule 17 (expression -> expression OR expression .) ]
+  ! RSHIFT          [ reduce using rule 17 (expression -> expression OR expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+
+
+state 62
+
+    (18) expression -> expression EQEQ expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 18 (expression -> expression EQEQ expression .)
+    PLUS            reduce using rule 18 (expression -> expression EQEQ expression .)
+    MINUS           reduce using rule 18 (expression -> expression EQEQ expression .)
+    TIMES           reduce using rule 18 (expression -> expression EQEQ expression .)
+    DIVIDE          reduce using rule 18 (expression -> expression EQEQ expression .)
+    AND             reduce using rule 18 (expression -> expression EQEQ expression .)
+    OR              reduce using rule 18 (expression -> expression EQEQ expression .)
+    EQEQ            reduce using rule 18 (expression -> expression EQEQ expression .)
+    NEQ             reduce using rule 18 (expression -> expression EQEQ expression .)
+    RPAREN          reduce using rule 18 (expression -> expression EQEQ expression .)
+    LT              shift and go to state 43
+    LE              shift and go to state 44
+    GT              shift and go to state 45
+    GE              shift and go to state 46
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! LT              [ reduce using rule 18 (expression -> expression EQEQ expression .) ]
+  ! LE              [ reduce using rule 18 (expression -> expression EQEQ expression .) ]
+  ! GT              [ reduce using rule 18 (expression -> expression EQEQ expression .) ]
+  ! GE              [ reduce using rule 18 (expression -> expression EQEQ expression .) ]
+  ! BITAND          [ reduce using rule 18 (expression -> expression EQEQ expression .) ]
+  ! BITOR           [ reduce using rule 18 (expression -> expression EQEQ expression .) ]
+  ! BITXOR          [ reduce using rule 18 (expression -> expression EQEQ expression .) ]
+  ! LSHIFT          [ reduce using rule 18 (expression -> expression EQEQ expression .) ]
+  ! RSHIFT          [ reduce using rule 18 (expression -> expression EQEQ expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+
+
+state 63
+
+    (19) expression -> expression NEQ expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 19 (expression -> expression NEQ expression .)
+    PLUS            reduce using rule 19 (expression -> expression NEQ expression .)
+    MINUS           reduce using rule 19 (expression -> expression NEQ expression .)
+    TIMES           reduce using rule 19 (expression -> expression NEQ expression .)
+    DIVIDE          reduce using rule 19 (expression -> expression NEQ expression .)
+    AND             reduce using rule 19 (expression -> expression NEQ expression .)
+    OR              reduce using rule 19 (expression -> expression NEQ expression .)
+    EQEQ            reduce using rule 19 (expression -> expression NEQ expression .)
+    NEQ             reduce using rule 19 (expression -> expression NEQ expression .)
+    RPAREN          reduce using rule 19 (expression -> expression NEQ expression .)
+    LT              shift and go to state 43
+    LE              shift and go to state 44
+    GT              shift and go to state 45
+    GE              shift and go to state 46
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! LT              [ reduce using rule 19 (expression -> expression NEQ expression .) ]
+  ! LE              [ reduce using rule 19 (expression -> expression NEQ expression .) ]
+  ! GT              [ reduce using rule 19 (expression -> expression NEQ expression .) ]
+  ! GE              [ reduce using rule 19 (expression -> expression NEQ expression .) ]
+  ! BITAND          [ reduce using rule 19 (expression -> expression NEQ expression .) ]
+  ! BITOR           [ reduce using rule 19 (expression -> expression NEQ expression .) ]
+  ! BITXOR          [ reduce using rule 19 (expression -> expression NEQ expression .) ]
+  ! LSHIFT          [ reduce using rule 19 (expression -> expression NEQ expression .) ]
+  ! RSHIFT          [ reduce using rule 19 (expression -> expression NEQ expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+
+
+state 64
+
+    (20) expression -> expression LT expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 20 (expression -> expression LT expression .)
+    PLUS            reduce using rule 20 (expression -> expression LT expression .)
+    MINUS           reduce using rule 20 (expression -> expression LT expression .)
+    TIMES           reduce using rule 20 (expression -> expression LT expression .)
+    DIVIDE          reduce using rule 20 (expression -> expression LT expression .)
+    AND             reduce using rule 20 (expression -> expression LT expression .)
+    OR              reduce using rule 20 (expression -> expression LT expression .)
+    EQEQ            reduce using rule 20 (expression -> expression LT expression .)
+    NEQ             reduce using rule 20 (expression -> expression LT expression .)
+    LT              reduce using rule 20 (expression -> expression LT expression .)
+    LE              reduce using rule 20 (expression -> expression LT expression .)
+    GT              reduce using rule 20 (expression -> expression LT expression .)
+    GE              reduce using rule 20 (expression -> expression LT expression .)
+    RPAREN          reduce using rule 20 (expression -> expression LT expression .)
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! BITAND          [ reduce using rule 20 (expression -> expression LT expression .) ]
+  ! BITOR           [ reduce using rule 20 (expression -> expression LT expression .) ]
+  ! BITXOR          [ reduce using rule 20 (expression -> expression LT expression .) ]
+  ! LSHIFT          [ reduce using rule 20 (expression -> expression LT expression .) ]
+  ! RSHIFT          [ reduce using rule 20 (expression -> expression LT expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+  ! LT              [ shift and go to state 43 ]
+  ! LE              [ shift and go to state 44 ]
+  ! GT              [ shift and go to state 45 ]
+  ! GE              [ shift and go to state 46 ]
+
+
+state 65
+
+    (21) expression -> expression LE expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 21 (expression -> expression LE expression .)
+    PLUS            reduce using rule 21 (expression -> expression LE expression .)
+    MINUS           reduce using rule 21 (expression -> expression LE expression .)
+    TIMES           reduce using rule 21 (expression -> expression LE expression .)
+    DIVIDE          reduce using rule 21 (expression -> expression LE expression .)
+    AND             reduce using rule 21 (expression -> expression LE expression .)
+    OR              reduce using rule 21 (expression -> expression LE expression .)
+    EQEQ            reduce using rule 21 (expression -> expression LE expression .)
+    NEQ             reduce using rule 21 (expression -> expression LE expression .)
+    LT              reduce using rule 21 (expression -> expression LE expression .)
+    LE              reduce using rule 21 (expression -> expression LE expression .)
+    GT              reduce using rule 21 (expression -> expression LE expression .)
+    GE              reduce using rule 21 (expression -> expression LE expression .)
+    RPAREN          reduce using rule 21 (expression -> expression LE expression .)
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! BITAND          [ reduce using rule 21 (expression -> expression LE expression .) ]
+  ! BITOR           [ reduce using rule 21 (expression -> expression LE expression .) ]
+  ! BITXOR          [ reduce using rule 21 (expression -> expression LE expression .) ]
+  ! LSHIFT          [ reduce using rule 21 (expression -> expression LE expression .) ]
+  ! RSHIFT          [ reduce using rule 21 (expression -> expression LE expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+  ! LT              [ shift and go to state 43 ]
+  ! LE              [ shift and go to state 44 ]
+  ! GT              [ shift and go to state 45 ]
+  ! GE              [ shift and go to state 46 ]
+
+
+state 66
+
+    (22) expression -> expression GT expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 22 (expression -> expression GT expression .)
+    PLUS            reduce using rule 22 (expression -> expression GT expression .)
+    MINUS           reduce using rule 22 (expression -> expression GT expression .)
+    TIMES           reduce using rule 22 (expression -> expression GT expression .)
+    DIVIDE          reduce using rule 22 (expression -> expression GT expression .)
+    AND             reduce using rule 22 (expression -> expression GT expression .)
+    OR              reduce using rule 22 (expression -> expression GT expression .)
+    EQEQ            reduce using rule 22 (expression -> expression GT expression .)
+    NEQ             reduce using rule 22 (expression -> expression GT expression .)
+    LT              reduce using rule 22 (expression -> expression GT expression .)
+    LE              reduce using rule 22 (expression -> expression GT expression .)
+    GT              reduce using rule 22 (expression -> expression GT expression .)
+    GE              reduce using rule 22 (expression -> expression GT expression .)
+    RPAREN          reduce using rule 22 (expression -> expression GT expression .)
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! BITAND          [ reduce using rule 22 (expression -> expression GT expression .) ]
+  ! BITOR           [ reduce using rule 22 (expression -> expression GT expression .) ]
+  ! BITXOR          [ reduce using rule 22 (expression -> expression GT expression .) ]
+  ! LSHIFT          [ reduce using rule 22 (expression -> expression GT expression .) ]
+  ! RSHIFT          [ reduce using rule 22 (expression -> expression GT expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+  ! LT              [ shift and go to state 43 ]
+  ! LE              [ shift and go to state 44 ]
+  ! GT              [ shift and go to state 45 ]
+  ! GE              [ shift and go to state 46 ]
+
+
+state 67
+
+    (23) expression -> expression GE expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 23 (expression -> expression GE expression .)
+    PLUS            reduce using rule 23 (expression -> expression GE expression .)
+    MINUS           reduce using rule 23 (expression -> expression GE expression .)
+    TIMES           reduce using rule 23 (expression -> expression GE expression .)
+    DIVIDE          reduce using rule 23 (expression -> expression GE expression .)
+    AND             reduce using rule 23 (expression -> expression GE expression .)
+    OR              reduce using rule 23 (expression -> expression GE expression .)
+    EQEQ            reduce using rule 23 (expression -> expression GE expression .)
+    NEQ             reduce using rule 23 (expression -> expression GE expression .)
+    LT              reduce using rule 23 (expression -> expression GE expression .)
+    LE              reduce using rule 23 (expression -> expression GE expression .)
+    GT              reduce using rule 23 (expression -> expression GE expression .)
+    GE              reduce using rule 23 (expression -> expression GE expression .)
+    RPAREN          reduce using rule 23 (expression -> expression GE expression .)
+    BITAND          shift and go to state 47
+    BITOR           shift and go to state 48
+    BITXOR          shift and go to state 49
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! BITAND          [ reduce using rule 23 (expression -> expression GE expression .) ]
+  ! BITOR           [ reduce using rule 23 (expression -> expression GE expression .) ]
+  ! BITXOR          [ reduce using rule 23 (expression -> expression GE expression .) ]
+  ! LSHIFT          [ reduce using rule 23 (expression -> expression GE expression .) ]
+  ! RSHIFT          [ reduce using rule 23 (expression -> expression GE expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+  ! LT              [ shift and go to state 43 ]
+  ! LE              [ shift and go to state 44 ]
+  ! GT              [ shift and go to state 45 ]
+  ! GE              [ shift and go to state 46 ]
+
+
+state 68
+
+    (24) expression -> expression BITAND expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 24 (expression -> expression BITAND expression .)
+    PLUS            reduce using rule 24 (expression -> expression BITAND expression .)
+    MINUS           reduce using rule 24 (expression -> expression BITAND expression .)
+    TIMES           reduce using rule 24 (expression -> expression BITAND expression .)
+    DIVIDE          reduce using rule 24 (expression -> expression BITAND expression .)
+    AND             reduce using rule 24 (expression -> expression BITAND expression .)
+    OR              reduce using rule 24 (expression -> expression BITAND expression .)
+    EQEQ            reduce using rule 24 (expression -> expression BITAND expression .)
+    NEQ             reduce using rule 24 (expression -> expression BITAND expression .)
+    LT              reduce using rule 24 (expression -> expression BITAND expression .)
+    LE              reduce using rule 24 (expression -> expression BITAND expression .)
+    GT              reduce using rule 24 (expression -> expression BITAND expression .)
+    GE              reduce using rule 24 (expression -> expression BITAND expression .)
+    BITAND          reduce using rule 24 (expression -> expression BITAND expression .)
+    BITOR           reduce using rule 24 (expression -> expression BITAND expression .)
+    BITXOR          reduce using rule 24 (expression -> expression BITAND expression .)
+    RPAREN          reduce using rule 24 (expression -> expression BITAND expression .)
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! LSHIFT          [ reduce using rule 24 (expression -> expression BITAND expression .) ]
+  ! RSHIFT          [ reduce using rule 24 (expression -> expression BITAND expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+  ! LT              [ shift and go to state 43 ]
+  ! LE              [ shift and go to state 44 ]
+  ! GT              [ shift and go to state 45 ]
+  ! GE              [ shift and go to state 46 ]
+  ! BITAND          [ shift and go to state 47 ]
+  ! BITOR           [ shift and go to state 48 ]
+  ! BITXOR          [ shift and go to state 49 ]
+
+
+state 69
+
+    (25) expression -> expression BITOR expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 25 (expression -> expression BITOR expression .)
+    PLUS            reduce using rule 25 (expression -> expression BITOR expression .)
+    MINUS           reduce using rule 25 (expression -> expression BITOR expression .)
+    TIMES           reduce using rule 25 (expression -> expression BITOR expression .)
+    DIVIDE          reduce using rule 25 (expression -> expression BITOR expression .)
+    AND             reduce using rule 25 (expression -> expression BITOR expression .)
+    OR              reduce using rule 25 (expression -> expression BITOR expression .)
+    EQEQ            reduce using rule 25 (expression -> expression BITOR expression .)
+    NEQ             reduce using rule 25 (expression -> expression BITOR expression .)
+    LT              reduce using rule 25 (expression -> expression BITOR expression .)
+    LE              reduce using rule 25 (expression -> expression BITOR expression .)
+    GT              reduce using rule 25 (expression -> expression BITOR expression .)
+    GE              reduce using rule 25 (expression -> expression BITOR expression .)
+    BITAND          reduce using rule 25 (expression -> expression BITOR expression .)
+    BITOR           reduce using rule 25 (expression -> expression BITOR expression .)
+    BITXOR          reduce using rule 25 (expression -> expression BITOR expression .)
+    RPAREN          reduce using rule 25 (expression -> expression BITOR expression .)
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! LSHIFT          [ reduce using rule 25 (expression -> expression BITOR expression .) ]
+  ! RSHIFT          [ reduce using rule 25 (expression -> expression BITOR expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+  ! LT              [ shift and go to state 43 ]
+  ! LE              [ shift and go to state 44 ]
+  ! GT              [ shift and go to state 45 ]
+  ! GE              [ shift and go to state 46 ]
+  ! BITAND          [ shift and go to state 47 ]
+  ! BITOR           [ shift and go to state 48 ]
+  ! BITXOR          [ shift and go to state 49 ]
+
+
+state 70
+
+    (26) expression -> expression BITXOR expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 26 (expression -> expression BITXOR expression .)
+    PLUS            reduce using rule 26 (expression -> expression BITXOR expression .)
+    MINUS           reduce using rule 26 (expression -> expression BITXOR expression .)
+    TIMES           reduce using rule 26 (expression -> expression BITXOR expression .)
+    DIVIDE          reduce using rule 26 (expression -> expression BITXOR expression .)
+    AND             reduce using rule 26 (expression -> expression BITXOR expression .)
+    OR              reduce using rule 26 (expression -> expression BITXOR expression .)
+    EQEQ            reduce using rule 26 (expression -> expression BITXOR expression .)
+    NEQ             reduce using rule 26 (expression -> expression BITXOR expression .)
+    LT              reduce using rule 26 (expression -> expression BITXOR expression .)
+    LE              reduce using rule 26 (expression -> expression BITXOR expression .)
+    GT              reduce using rule 26 (expression -> expression BITXOR expression .)
+    GE              reduce using rule 26 (expression -> expression BITXOR expression .)
+    BITAND          reduce using rule 26 (expression -> expression BITXOR expression .)
+    BITOR           reduce using rule 26 (expression -> expression BITXOR expression .)
+    BITXOR          reduce using rule 26 (expression -> expression BITXOR expression .)
+    RPAREN          reduce using rule 26 (expression -> expression BITXOR expression .)
+    LSHIFT          shift and go to state 50
+    RSHIFT          shift and go to state 51
+
+  ! LSHIFT          [ reduce using rule 26 (expression -> expression BITXOR expression .) ]
+  ! RSHIFT          [ reduce using rule 26 (expression -> expression BITXOR expression .) ]
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+  ! LT              [ shift and go to state 43 ]
+  ! LE              [ shift and go to state 44 ]
+  ! GT              [ shift and go to state 45 ]
+  ! GE              [ shift and go to state 46 ]
+  ! BITAND          [ shift and go to state 47 ]
+  ! BITOR           [ shift and go to state 48 ]
+  ! BITXOR          [ shift and go to state 49 ]
+
+
+state 71
+
+    (27) expression -> expression LSHIFT expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 27 (expression -> expression LSHIFT expression .)
+    PLUS            reduce using rule 27 (expression -> expression LSHIFT expression .)
+    MINUS           reduce using rule 27 (expression -> expression LSHIFT expression .)
+    TIMES           reduce using rule 27 (expression -> expression LSHIFT expression .)
+    DIVIDE          reduce using rule 27 (expression -> expression LSHIFT expression .)
+    AND             reduce using rule 27 (expression -> expression LSHIFT expression .)
+    OR              reduce using rule 27 (expression -> expression LSHIFT expression .)
+    EQEQ            reduce using rule 27 (expression -> expression LSHIFT expression .)
+    NEQ             reduce using rule 27 (expression -> expression LSHIFT expression .)
+    LT              reduce using rule 27 (expression -> expression LSHIFT expression .)
+    LE              reduce using rule 27 (expression -> expression LSHIFT expression .)
+    GT              reduce using rule 27 (expression -> expression LSHIFT expression .)
+    GE              reduce using rule 27 (expression -> expression LSHIFT expression .)
+    BITAND          reduce using rule 27 (expression -> expression LSHIFT expression .)
+    BITOR           reduce using rule 27 (expression -> expression LSHIFT expression .)
+    BITXOR          reduce using rule 27 (expression -> expression LSHIFT expression .)
+    LSHIFT          reduce using rule 27 (expression -> expression LSHIFT expression .)
+    RSHIFT          reduce using rule 27 (expression -> expression LSHIFT expression .)
+    RPAREN          reduce using rule 27 (expression -> expression LSHIFT expression .)
+
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+  ! LT              [ shift and go to state 43 ]
+  ! LE              [ shift and go to state 44 ]
+  ! GT              [ shift and go to state 45 ]
+  ! GE              [ shift and go to state 46 ]
+  ! BITAND          [ shift and go to state 47 ]
+  ! BITOR           [ shift and go to state 48 ]
+  ! BITXOR          [ shift and go to state 49 ]
+  ! LSHIFT          [ shift and go to state 50 ]
+  ! RSHIFT          [ shift and go to state 51 ]
+
+
+state 72
+
+    (28) expression -> expression RSHIFT expression .
+    (12) expression -> expression . PLUS expression
+    (13) expression -> expression . MINUS expression
+    (14) expression -> expression . TIMES expression
+    (15) expression -> expression . DIVIDE expression
+    (16) expression -> expression . AND expression
+    (17) expression -> expression . OR expression
+    (18) expression -> expression . EQEQ expression
+    (19) expression -> expression . NEQ expression
+    (20) expression -> expression . LT expression
+    (21) expression -> expression . LE expression
+    (22) expression -> expression . GT expression
+    (23) expression -> expression . GE expression
+    (24) expression -> expression . BITAND expression
+    (25) expression -> expression . BITOR expression
+    (26) expression -> expression . BITXOR expression
+    (27) expression -> expression . LSHIFT expression
+    (28) expression -> expression . RSHIFT expression
+
+    SEMI            reduce using rule 28 (expression -> expression RSHIFT expression .)
+    PLUS            reduce using rule 28 (expression -> expression RSHIFT expression .)
+    MINUS           reduce using rule 28 (expression -> expression RSHIFT expression .)
+    TIMES           reduce using rule 28 (expression -> expression RSHIFT expression .)
+    DIVIDE          reduce using rule 28 (expression -> expression RSHIFT expression .)
+    AND             reduce using rule 28 (expression -> expression RSHIFT expression .)
+    OR              reduce using rule 28 (expression -> expression RSHIFT expression .)
+    EQEQ            reduce using rule 28 (expression -> expression RSHIFT expression .)
+    NEQ             reduce using rule 28 (expression -> expression RSHIFT expression .)
+    LT              reduce using rule 28 (expression -> expression RSHIFT expression .)
+    LE              reduce using rule 28 (expression -> expression RSHIFT expression .)
+    GT              reduce using rule 28 (expression -> expression RSHIFT expression .)
+    GE              reduce using rule 28 (expression -> expression RSHIFT expression .)
+    BITAND          reduce using rule 28 (expression -> expression RSHIFT expression .)
+    BITOR           reduce using rule 28 (expression -> expression RSHIFT expression .)
+    BITXOR          reduce using rule 28 (expression -> expression RSHIFT expression .)
+    LSHIFT          reduce using rule 28 (expression -> expression RSHIFT expression .)
+    RSHIFT          reduce using rule 28 (expression -> expression RSHIFT expression .)
+    RPAREN          reduce using rule 28 (expression -> expression RSHIFT expression .)
+
+  ! PLUS            [ shift and go to state 35 ]
+  ! MINUS           [ shift and go to state 36 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! DIVIDE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 39 ]
+  ! OR              [ shift and go to state 40 ]
+  ! EQEQ            [ shift and go to state 41 ]
+  ! NEQ             [ shift and go to state 42 ]
+  ! LT              [ shift and go to state 43 ]
+  ! LE              [ shift and go to state 44 ]
+  ! GT              [ shift and go to state 45 ]
+  ! GE              [ shift and go to state 46 ]
+  ! BITAND          [ shift and go to state 47 ]
+  ! BITOR           [ shift and go to state 48 ]
+  ! BITXOR          [ shift and go to state 49 ]
+  ! LSHIFT          [ shift and go to state 50 ]
+  ! RSHIFT          [ shift and go to state 51 ]
+
+
+state 73
+
+    (32) expression -> LPAREN expression RPAREN .
+
+    SEMI            reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    TIMES           reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    AND             reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    OR              reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    EQEQ            reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    NEQ             reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    LT              reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    LE              reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    GT              reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    GE              reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    BITAND          reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    BITOR           reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    BITXOR          reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    LSHIFT          reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    RSHIFT          reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 32 (expression -> LPAREN expression RPAREN .)
+

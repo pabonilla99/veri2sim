@@ -9,7 +9,7 @@ class Component():
         self.outputs = outputs
         self.wires = wires
         self.statements = statements
-        os.mkdir(f'./{name}')
+        os.makedirs(f'./{name}', exist_ok=True)
 
 
     def create_package(self):
