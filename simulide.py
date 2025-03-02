@@ -104,7 +104,7 @@ class Component():
                 f.write(f'\t{input}Pin.changeCallBack( element, true );\n')
             f.write('\n')
             for output in self.outputs:
-                f.write(f'\t{output}Pin.setVoltage( 0 )\n')
+                f.write(f'\t{output}Pin.setVoltage( 0 );\n')
             f.write('}\n')
 
             # voltChanged function

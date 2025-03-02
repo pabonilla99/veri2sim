@@ -3,14 +3,9 @@ from parser import parser
 from simulide import Component
 
 
-# Ejemplo de entrada de Verilog
-data = '''
-module example (input a, output b);
-    wire w;
-    assign w = a;
-    assign b = w;
-endmodule
-'''
+# Basic Verilog file
+with open('basic.v', 'r') as f:
+    data = f.read()
 
 # parse the input
 result = parser.parse(data, lexer=lexer)
