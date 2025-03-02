@@ -109,9 +109,9 @@ def p_assignment(p):
     '''assignment : ASSIGN IDENTIFIER EQ expression SEMI'''
     if p[2] in symbol_table.symbols:
         if symbol_table.symbols[p[2]].type == 'output': # output <= statement
-            p[0] = f'{p[2]}Pin.setVoltage( {p[4]} );\n'
+            p[0] = f'{p[2]}Pin.setVoltage( {p[4]} )'
         else:                                           # wire <= statement
-            p[0] = f'{p[2]} = {p[4]};\n' 
+            p[0] = f'{p[2]} = {p[4]}' 
 
 def p_expression_binop(p):
     '''expression : expression PLUS expression

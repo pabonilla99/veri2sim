@@ -112,15 +112,5 @@ class Component():
             # voltChanged function
             f.write('\nvoid voltChanged()\n{\n\t// ___implementation___\n')
             for statement in self.statements:
-                if statement[0] == 'assign':
-                    if statement[1] in self.outputs: #outputs
-                        if statement[2] in self.inputs: # output <= input
-                            f.write(f'\t{statement[1]}Pin.setVoltage( {statement[2]}Pin.getVoltage() );\n')
-                        else:                           # output <= statement
-                            f.write(f'\t{statement[1]}Pin.setVoltage( {statement[2]} );\n')
-                    else:   #wires
-                        if statement[2] in self.inputs: # wire <= input
-                            f.write(f'\t{statement[1]} = {statement[2]}Pin.getVoltage();\n')
-                        else:                           # wire <= statement
-                            f.write(f'\t{statement[1]} = {statement[2]};\n') 
+                f.write(f'\t{statement};\n')     
             f.write('}\n')
