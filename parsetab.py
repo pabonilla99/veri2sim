@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDEleftANDORleftEQEQNEQLTLEGTGEleftBITANDBITORBITXORleftLSHIFTRSHIFTrightNOTBITNOTALWAYS AND ASSIGN BEGIN BITAND BITNOT BITOR BITXOR CASE COMMA DEFAULT DIVIDE ELSE END ENDCASE ENDFUNCTION ENDMODULE ENDTASK EQ EQEQ FOR FOREVER FUNCTION GE GT IDENTIFIER IF INITIAL INPUT LBRACE LE LPAREN LSHIFT LT MINUS MODULE NEGEDGE NEQ NOT NUMBER OR OUTPUT PLUS POSEDGE RBRACE REG REPEAT RPAREN RSHIFT SEMI TASK TIMES WHILE WIREmodule : MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULEport_list : port\n                 | port_list COMMA portport : INPUT IDENTIFIER\n            | OUTPUT IDENTIFIERmodule_items : module_item\n                    | module_items module_itemmodule_item : statement\n                   | declarationdeclaration : WIRE IDENTIFIER SEMI\n                   | REG IDENTIFIER SEMIstatement : assignment\n                 | if_statement\n                 | always_statementassignment : ASSIGN IDENTIFIER EQ expression SEMIif_statement : IF LPAREN expression RPAREN statement\n                    | IF LPAREN expression RPAREN statement ELSE statementalways_statement : ALWAYS statementexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expression\n                  | expression AND expression\n                  | expression OR expression\n                  | expression EQEQ expression\n                  | expression NEQ expression\n                  | expression LT expression\n                  | expression LE expression\n                  | expression GT expression\n                  | expression GE expression\n                  | expression BITAND expression\n                  | expression BITOR expression\n                  | expression BITXOR expression\n                  | expression LSHIFT expression\n                  | expression RSHIFT expressionexpression : MINUS expression %prec NOT\n                  | NOT expression\n                  | BITNOT expressionexpression : LPAREN expression RPARENexpression : NUMBERexpression : IDENTIFIER'
+_lr_signature = 'ALWAYS AND ASSIGN BEGIN BITAND BITNOT BITOR BITXOR CASE COMMA DEFAULT DIVIDE ELSE END ENDCASE ENDFUNCTION ENDMODULE ENDTASK EQ EQEQ FOR FOREVER FUNCTION GE GT IDENTIFIER IF INITIAL INPUT LBRACE LE LPAREN LSHIFT LT MINUS MODULE NEGEDGE NEQ NOT NUMBER OR OUTPUT PLUS POSEDGE RBRACE REG REPEAT RPAREN RSHIFT SEMI TASK TIMES WHILE WIREmodule : MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULEport_list : port\n                 | port_list COMMA portport : INPUT IDENTIFIER\n            | OUTPUT IDENTIFIERmodule_items : module_item\n                    | module_items module_itemmodule_item : wire_declaration\n                   | assignmentwire_declaration : WIRE IDENTIFIER SEMIassignment : ASSIGN IDENTIFIER EQ IDENTIFIER SEMI'
     
-_lr_action_items = {'MODULE':([0,],[2,]),'$end':([1,27,],[0,-1,]),'IDENTIFIER':([2,7,8,22,23,24,32,36,37,39,40,41,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,],[3,11,12,29,30,31,43,43,43,43,43,43,43,43,43,43,43,43,43,43,43,43,43,43,43,43,43,43,43,]),'LPAREN':([3,25,32,36,37,39,40,41,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,],[4,32,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,]),'INPUT':([4,10,],[7,7,]),'OUTPUT':([4,10,],[8,8,]),'RPAREN':([5,6,11,12,14,38,42,43,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[9,-2,-4,-5,-3,46,-40,-41,68,-36,-37,-38,-39,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'COMMA':([5,6,11,12,14,],[10,-2,-4,-5,-3,]),'SEMI':([9,29,30,42,43,44,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[13,34,35,-40,-41,67,-36,-37,-38,-39,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'WIRE':([13,15,16,17,18,19,20,21,28,33,34,35,67,69,88,],[22,22,-6,-8,-9,-12,-13,-14,-7,-18,-10,-11,-15,-16,-17,]),'REG':([13,15,16,17,18,19,20,21,28,33,34,35,67,69,88,],[23,23,-6,-8,-9,-12,-13,-14,-7,-18,-10,-11,-15,-16,-17,]),'ASSIGN':([13,15,16,17,18,19,20,21,26,28,33,34,35,46,67,69,87,88,],[24,24,-6,-8,-9,-12,-13,-14,24,-7,-18,-10,-11,24,-15,-16,24,-17,]),'IF':([13,15,16,17,18,19,20,21,26,28,33,34,35,46,67,69,87,88,],[25,25,-6,-8,-9,-12,-13,-14,25,-7,-18,-10,-11,25,-15,-16,25,-17,]),'ALWAYS':([13,15,16,17,18,19,20,21,26,28,33,34,35,46,67,69,87,88,],[26,26,-6,-8,-9,-12,-13,-14,26,-7,-18,-10,-11,26,-15,-16,26,-17,]),'ENDMODULE':([15,16,17,18,19,20,21,28,33,34,35,67,69,88,],[27,-6,-8,-9,-12,-13,-14,-7,-18,-10,-11,-15,-16,-17,]),'ELSE':([19,20,21,33,67,69,88,],[-12,-13,-14,-18,-15,87,-17,]),'EQ':([31,],[36,]),'MINUS':([32,36,37,38,39,40,41,42,43,44,45,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[39,39,39,48,39,39,39,-40,-41,48,48,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,-36,-37,-38,-39,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'NOT':([32,36,37,39,40,41,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,],[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,]),'BITNOT':([32,36,37,39,40,41,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,],[41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,]),'NUMBER':([32,36,37,39,40,41,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,],[42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,]),'PLUS':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[47,-40,-41,47,47,-36,-37,-38,-39,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'TIMES':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[49,-40,-41,49,49,-36,-37,-38,-39,49,49,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'DIVIDE':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[50,-40,-41,50,50,-36,-37,-38,-39,50,50,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'AND':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[51,-40,-41,51,51,-36,-37,-38,-39,51,51,51,51,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'OR':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[52,-40,-41,52,52,-36,-37,-38,-39,52,52,52,52,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'EQEQ':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[53,-40,-41,53,53,-36,-37,-38,-39,53,53,53,53,53,53,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'NEQ':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[54,-40,-41,54,54,-36,-37,-38,-39,54,54,54,54,54,54,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'LT':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[55,-40,-41,55,55,-36,-37,-38,-39,55,55,55,55,55,55,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'LE':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[56,-40,-41,56,56,-36,-37,-38,-39,56,56,56,56,56,56,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'GT':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[57,-40,-41,57,57,-36,-37,-38,-39,57,57,57,57,57,57,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'GE':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[58,-40,-41,58,58,-36,-37,-38,-39,58,58,58,58,58,58,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,]),'BITAND':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[59,-40,-41,59,59,-36,-37,-38,-39,59,59,59,59,59,59,59,59,59,59,59,59,-31,-32,-33,-34,-35,]),'BITOR':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[60,-40,-41,60,60,-36,-37,-38,-39,60,60,60,60,60,60,60,60,60,60,60,60,-31,-32,-33,-34,-35,]),'BITXOR':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[61,-40,-41,61,61,-36,-37,-38,-39,61,61,61,61,61,61,61,61,61,61,61,61,-31,-32,-33,-34,-35,]),'LSHIFT':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[62,-40,-41,62,62,-36,-37,-38,-39,62,62,62,62,62,62,62,62,62,62,62,62,62,62,62,-34,-35,]),'RSHIFT':([38,42,43,44,45,64,65,66,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,],[63,-40,-41,63,63,-36,-37,-38,-39,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,-34,-35,]),}
+_lr_action_items = {'MODULE':([0,],[2,]),'$end':([1,21,],[0,-1,]),'IDENTIFIER':([2,7,8,19,20,26,],[3,11,12,23,24,27,]),'LPAREN':([3,],[4,]),'INPUT':([4,10,],[7,7,]),'OUTPUT':([4,10,],[8,8,]),'RPAREN':([5,6,11,12,14,],[9,-2,-4,-5,-3,]),'COMMA':([5,6,11,12,14,],[10,-2,-4,-5,-3,]),'SEMI':([9,23,27,],[13,25,28,]),'WIRE':([13,15,16,17,18,22,25,28,],[19,19,-6,-8,-9,-7,-10,-11,]),'ASSIGN':([13,15,16,17,18,22,25,28,],[20,20,-6,-8,-9,-7,-10,-11,]),'ENDMODULE':([15,16,17,18,22,25,28,],[21,-6,-8,-9,-7,-10,-11,]),'EQ':([24,],[26,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'module':([0,],[1,]),'port_list':([4,],[5,]),'port':([4,10,],[6,14,]),'module_items':([13,],[15,]),'module_item':([13,15,],[16,28,]),'statement':([13,15,26,46,87,],[17,17,33,69,88,]),'declaration':([13,15,],[18,18,]),'assignment':([13,15,26,46,87,],[19,19,19,19,19,]),'if_statement':([13,15,26,46,87,],[20,20,20,20,20,]),'always_statement':([13,15,26,46,87,],[21,21,21,21,21,]),'expression':([32,36,37,39,40,41,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,],[38,44,45,64,65,66,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,]),}
+_lr_goto_items = {'module':([0,],[1,]),'port_list':([4,],[5,]),'port':([4,10,],[6,14,]),'module_items':([13,],[15,]),'module_item':([13,15,],[16,22,]),'wire_declaration':([13,15,],[17,17,]),'assignment':([13,15,],[18,18,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,45 +27,15 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> module","S'",1,None,None,None),
-  ('module -> MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULE','module',8,'p_module','parser.py',17),
-  ('port_list -> port','port_list',1,'p_port_list','parser.py',21),
-  ('port_list -> port_list COMMA port','port_list',3,'p_port_list','parser.py',22),
-  ('port -> INPUT IDENTIFIER','port',2,'p_port','parser.py',29),
-  ('port -> OUTPUT IDENTIFIER','port',2,'p_port','parser.py',30),
-  ('module_items -> module_item','module_items',1,'p_module_items','parser.py',34),
-  ('module_items -> module_items module_item','module_items',2,'p_module_items','parser.py',35),
-  ('module_item -> statement','module_item',1,'p_module_item','parser.py',42),
-  ('module_item -> declaration','module_item',1,'p_module_item','parser.py',43),
-  ('declaration -> WIRE IDENTIFIER SEMI','declaration',3,'p_declaration','parser.py',47),
-  ('declaration -> REG IDENTIFIER SEMI','declaration',3,'p_declaration','parser.py',48),
-  ('statement -> assignment','statement',1,'p_statement','parser.py',52),
-  ('statement -> if_statement','statement',1,'p_statement','parser.py',53),
-  ('statement -> always_statement','statement',1,'p_statement','parser.py',54),
-  ('assignment -> ASSIGN IDENTIFIER EQ expression SEMI','assignment',5,'p_assignment','parser.py',59),
-  ('if_statement -> IF LPAREN expression RPAREN statement','if_statement',5,'p_if_statement','parser.py',63),
-  ('if_statement -> IF LPAREN expression RPAREN statement ELSE statement','if_statement',7,'p_if_statement','parser.py',64),
-  ('always_statement -> ALWAYS statement','always_statement',2,'p_always_statement','parser.py',91),
-  ('expression -> expression PLUS expression','expression',3,'p_expression_binop','parser.py',95),
-  ('expression -> expression MINUS expression','expression',3,'p_expression_binop','parser.py',96),
-  ('expression -> expression TIMES expression','expression',3,'p_expression_binop','parser.py',97),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binop','parser.py',98),
-  ('expression -> expression AND expression','expression',3,'p_expression_binop','parser.py',99),
-  ('expression -> expression OR expression','expression',3,'p_expression_binop','parser.py',100),
-  ('expression -> expression EQEQ expression','expression',3,'p_expression_binop','parser.py',101),
-  ('expression -> expression NEQ expression','expression',3,'p_expression_binop','parser.py',102),
-  ('expression -> expression LT expression','expression',3,'p_expression_binop','parser.py',103),
-  ('expression -> expression LE expression','expression',3,'p_expression_binop','parser.py',104),
-  ('expression -> expression GT expression','expression',3,'p_expression_binop','parser.py',105),
-  ('expression -> expression GE expression','expression',3,'p_expression_binop','parser.py',106),
-  ('expression -> expression BITAND expression','expression',3,'p_expression_binop','parser.py',107),
-  ('expression -> expression BITOR expression','expression',3,'p_expression_binop','parser.py',108),
-  ('expression -> expression BITXOR expression','expression',3,'p_expression_binop','parser.py',109),
-  ('expression -> expression LSHIFT expression','expression',3,'p_expression_binop','parser.py',110),
-  ('expression -> expression RSHIFT expression','expression',3,'p_expression_binop','parser.py',111),
-  ('expression -> MINUS expression','expression',2,'p_expression_unop','parser.py',115),
-  ('expression -> NOT expression','expression',2,'p_expression_unop','parser.py',116),
-  ('expression -> BITNOT expression','expression',2,'p_expression_unop','parser.py',117),
-  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','parser.py',121),
-  ('expression -> NUMBER','expression',1,'p_expression_number','parser.py',125),
-  ('expression -> IDENTIFIER','expression',1,'p_expression_identifier','parser.py',129),
+  ('module -> MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULE','module',8,'p_module','parser.py',18),
+  ('port_list -> port','port_list',1,'p_port_list','parser.py',26),
+  ('port_list -> port_list COMMA port','port_list',3,'p_port_list','parser.py',27),
+  ('port -> INPUT IDENTIFIER','port',2,'p_port','parser.py',42),
+  ('port -> OUTPUT IDENTIFIER','port',2,'p_port','parser.py',43),
+  ('module_items -> module_item','module_items',1,'p_module_items','parser.py',47),
+  ('module_items -> module_items module_item','module_items',2,'p_module_items','parser.py',48),
+  ('module_item -> wire_declaration','module_item',1,'p_module_item','parser.py',63),
+  ('module_item -> assignment','module_item',1,'p_module_item','parser.py',64),
+  ('wire_declaration -> WIRE IDENTIFIER SEMI','wire_declaration',3,'p_wire_declaration','parser.py',68),
+  ('assignment -> ASSIGN IDENTIFIER EQ IDENTIFIER SEMI','assignment',5,'p_assignment','parser.py',72),
 ]

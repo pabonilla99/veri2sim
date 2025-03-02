@@ -8,7 +8,6 @@
 *.html text
 *.css text
 *.js text
-*.json text
 *.xml text
 
 # Declare files that will always have CRLF line endings on checkout.
@@ -39,3 +38,8 @@
 *.package linguist-generated
 *.mcu linguist-generated
 *.as linguist-generated
+*.out linguist-generated
+
+# Mark specific files or patterns as vendored
+.vsode/** linguist-vendored
+*.json linguist-vendored
