@@ -69,8 +69,58 @@ def p_wire_declaration(p):
     p[0] = ('wire', p[2])
 
 def p_assignment(p):
-    '''assignment : ASSIGN IDENTIFIER EQ IDENTIFIER SEMI'''
+    '''assignment : ASSIGN IDENTIFIER EQ expression SEMI'''
     p[0] = ('assign', p[2], p[4])
+
+def p_expression_binop(p):
+    '''expression : expression PLUS expression
+                  | expression MINUS expression
+                  | expression TIMES expression
+                  | expression DIVIDE expression
+                  | expression AND expression
+                  | expression OR expression
+                  | expression EQEQ expression
+                  | expression NEQ expression
+                  | expression LT expression
+                  | expression LE expression
+                  | expression GT expression
+                  | expression GE expression
+                  | expression BITAND expression
+                  | expression BITOR expression
+                  | expression BITXOR expression
+                  | expression LSHIFT expression
+                  | expression RSHIFT expression'''
+    p[0] = (p[2], p[1], p[3])
+
+# Definición de la precedencia de los operadores
+precedence = (
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'TIMES', 'DIVIDE'),
+    ('left', 'AND', 'OR'),
+    ('left', 'EQEQ', 'NEQ'),
+    ('left', 'LT', 'LE', 'GT', 'GE'),
+    ('left', 'BITAND', 'BITOR', 'BITXOR'),
+    ('left', 'LSHIFT', 'RSHIFT'),
+    ('right', 'NOT', 'BITNOT'),
+)
+
+def p_expression_unop(p):
+    '''expression : MINUS expression %prec NOT
+                  | NOT expression
+                  | BITNOT expression'''
+    p[0] = (p[1], p[2])
+
+def p_expression_group(p):
+    '''expression : LPAREN expression RPAREN'''
+    p[0] = p[2]
+
+def p_expression_number(p):
+    '''expression : NUMBER'''
+    p[0] = p[1]
+
+def p_expression_identifier(p):
+    '''expression : IDENTIFIER'''
+    p[0] = p[1]
 
 # Manejo de errores
 def p_error(p):

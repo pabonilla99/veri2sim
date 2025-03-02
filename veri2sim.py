@@ -10,6 +10,12 @@ with open('not.v', 'r') as f:
 # parse the input
 result = parser.parse(data, lexer=lexer)
 
+# Generar la salida personalizada
+if result:
+    print(result)
+else:
+    print("Error al analizar el módulo Verilog.")
+
 # create the SimulIDE component
 component = Component(result.name, 
                       result.inputs,
@@ -20,8 +26,3 @@ component.create_package()
 component.create_mcu()
 component.create_script()
 
-# Generar la salida personalizada
-if result:
-    print(result)
-else:
-    print("Error al analizar el módulo Verilog.")
