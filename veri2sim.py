@@ -4,7 +4,7 @@ from simulide import Component
 
 
 # Basic Verilog file
-with open('basic.v', 'r') as f:
+with open('not.v', 'r') as f:
     data = f.read()
 
 # parse the input
