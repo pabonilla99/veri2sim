@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 from lexer import tokens
 
-# Clase para almacenar la información del módulo Verilog
+# Class to store Verilog module information
 class VerilogModule:
     def __init__(self, name):
         self.name = name
@@ -13,7 +13,7 @@ class VerilogModule:
     def __str__(self):
         return f"Module: {self.name}\nInputs: {self.inputs}\nOutputs: {self.outputs}\nWires: {self.wires}\nStatements: {self.statements}"
 
-# Clase para un símbolo en la tabla de símbolos
+# Class for a symbol in the symbol table
 class Symbol:
     def __init__(self, name, sym_type):
         self.name = name
@@ -22,7 +22,7 @@ class Symbol:
     def __str__(self):
         return f"Symbol(name={self.name}, type={self.type})"
 
-# Clase para la tabla de símbolos
+# Class for the symbol table
 class SymbolTable:
     def __init__(self):
         self.symbols = {}
@@ -36,11 +36,11 @@ class SymbolTable:
     def __str__(self):
         return "\n".join(str(symbol) for symbol in self.symbols.values())
 
-# Crear una instancia de la tabla de símbolos
+# Create an instance of the symbol table
 symbol_table = SymbolTable()
 
 
-# Definición de la gramática
+# Grammar definition
 def p_module(p):
     '''module : MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULE'''
     p[0] = VerilogModule(p[2])
@@ -49,7 +49,7 @@ def p_module(p):
     p[0].wires = p[7]['wires']
     p[0].statements = p[7]['statements']
 
-    # Agregar el módulo a la tabla de símbolos
+    # Add the module to the symbol table
     symbol_table.add_symbol(p[2], 'module')
     print(symbol_table)
 
@@ -74,7 +74,7 @@ def p_port(p):
             | OUTPUT IDENTIFIER'''
     p[0] = (p[1], p[2])
 
-    # Agregar el puerto a la tabla de símbolos
+    # Add the port to the symbol table
     symbol_table.add_symbol(p[2], p[1])
 
 def p_module_items(p):
@@ -102,7 +102,7 @@ def p_wire_declaration(p):
     '''wire_declaration : WIRE IDENTIFIER SEMI'''
     p[0] = ('wire', p[2])
 
-    # Agregar el wire a la tabla de símbolos
+    # Add the wire to the symbol table
     symbol_table.add_symbol(p[2], 'wire')
 
 def p_assignment(p):
@@ -133,7 +133,7 @@ def p_expression_binop(p):
                   | expression RSHIFT expression'''
     p[0] = f'{p[2]} {p[1]} {p[3]}'
 
-# Definición de la precedencia de los operadores
+# Operator precedence definition
 precedence = (
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
@@ -167,9 +167,9 @@ def p_expression_identifier(p):
         else:
             p[0] = p[1]
 
-# Manejo de errores
+# Error handling
 def p_error(p):
     print("Syntax error in input!")
 
-# Construir el parser
+# Build the parser
 parser = yacc.yacc()
