@@ -2,42 +2,62 @@ import argparse
 from lexer import lexer
 from parser import parser
 from simulide import Component
-
+import os
+import shutil
 
 description = '''
 veri2sim is a tool for converting Verilog files to SimulIDE component blocks.\n
-Create a SimulIDE's component block for `file.v` as this 3 files:
+Create a SimulIDE's component block for `file.v` as these 3 files:
 `file.package`, `file.mcu` and `file.as` (AngelScript).
 '''
 
 # Set up argument parser
 cli = argparse.ArgumentParser(description=description)
-cli.add_argument('file', type=str, help='Path to the Verilog file')
+cli.add_argument('-c', '--compile', dest='command', action='store_const', const='compile', help='Compile the Verilog file')
+cli.add_argument('-cl', '--clean', dest='command', action='store_const', const='clean', help='Clean the output directory')
+cli.add_argument('file', type=str, nargs='?', help='Path to the Verilog file (required for the compile command)')
 
 # Parse arguments
 args = cli.parse_args()
 
-# Open the Verilog file
-with open(args.file, 'r') as f:
+# Handle the 'clean' command
+if args.command == 'clean':
+    if os.path.exists('output'):
+        shutil.rmtree('output')
+        print("Output directory cleaned.")
+    else:
+        print("No output directory to clean.")
+    exit(0)
+
+# Handle the 'compile' command
+if args.command == 'compile':
+    if not args.file:
+        print("Error: The 'compile' command requires a Verilog file path.")
+        exit(1)
+
+    # Open the Verilog file
+    with open(args.file, 'r') as f:
         data = f.read()
 
-# Parse the input file
-result = parser.parse(data, lexer=lexer)
+    # Parse the input file
+    result = parser.parse(data, lexer=lexer)
 
-# Generate the custom output
-if result:
+    # Generate the custom output
+    if result:
         print(result)
-else:
+    else:
         print("Error analyzing the Verilog module.")
+        exit(1)
 
-# Create the SimulIDE component
-component = Component(result.name, 
-                                            result.inputs,
-                                            result.outputs,
-                                            result.wires,
-                                            result.statements)
+    # Create the SimulIDE component
+    component = Component(result.name, 
+                          result.inputs,
+                          result.outputs,
+                          result.wires,
+                          result.statements)
 
-# Generate the output files
-component.create_package()
-component.create_mcu()
-component.create_script()
+    # Generate the output files
+    component.create_package()
+    component.create_mcu()
+    component.create_script()
+    print("\nCompilation completed.")
