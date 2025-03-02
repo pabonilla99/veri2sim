@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 from lexer import tokens
 
-# Clase para almacenar la información del módulo Verilog
+# Estructura de datos para almacenar la información del módulo
 class VerilogModule:
     def __init__(self, name):
         self.name = name
@@ -13,33 +13,6 @@ class VerilogModule:
     def __str__(self):
         return f"Module: {self.name}\nInputs: {self.inputs}\nOutputs: {self.outputs}\nWires: {self.wires}\nStatements: {self.statements}"
 
-# Clase para un símbolo en la tabla de símbolos
-class Symbol:
-    def __init__(self, name, sym_type):
-        self.name = name
-        self.type = sym_type
-
-    def __str__(self):
-        return f"Symbol(name={self.name}, type={self.type})"
-
-# Clase para la tabla de símbolos
-class SymbolTable:
-    def __init__(self):
-        self.symbols = {}
-
-    def add_symbol(self, name, sym_type):
-        if name not in self.symbols:
-            self.symbols[name] = Symbol(name, sym_type)
-        else:
-            print(f"Warning: Symbol {name} already exists in the symbol table.")
-
-    def __str__(self):
-        return "\n".join(str(symbol) for symbol in self.symbols.values())
-
-# Crear una instancia de la tabla de símbolos
-symbol_table = SymbolTable()
-
-
 # Definición de la gramática
 def p_module(p):
     '''module : MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULE'''
@@ -48,10 +21,6 @@ def p_module(p):
     p[0].outputs = p[4]['outputs']
     p[0].wires = p[7]['wires']
     p[0].statements = p[7]['statements']
-
-    # Agregar el módulo a la tabla de símbolos
-    symbol_table.add_symbol(p[2], 'module')
-    print(symbol_table)
 
 def p_port_list(p):
     '''port_list : port
@@ -73,9 +42,6 @@ def p_port(p):
     '''port : INPUT IDENTIFIER
             | OUTPUT IDENTIFIER'''
     p[0] = (p[1], p[2])
-
-    # Agregar el puerto a la tabla de símbolos
-    symbol_table.add_symbol(p[2], p[1])
 
 def p_module_items(p):
     '''module_items : module_item
@@ -101,9 +67,6 @@ def p_module_item(p):
 def p_wire_declaration(p):
     '''wire_declaration : WIRE IDENTIFIER SEMI'''
     p[0] = ('wire', p[2])
-
-    # Agregar el wire a la tabla de símbolos
-    symbol_table.add_symbol(p[2], 'wire')
 
 def p_assignment(p):
     '''assignment : ASSIGN IDENTIFIER EQ expression SEMI'''
