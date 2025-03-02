@@ -89,7 +89,7 @@ class Component():
             # global variables and functions
             f.write('\n// ___global_definitions___')
             for wire in self.wires:
-                f.write(f'\ndouble {wire} = 0.0;')
+                f.write(f'\nuint8 {wire} = 0;')
 
 
             # setup function
@@ -98,15 +98,15 @@ class Component():
             # reset function
             f.write(f'\n\nvoid reset()\n{{\n\tprint("{self.name} reset()");\n\n')
             for input in self.inputs:
-                f.write(f'\t{input}Pin.setPinMode( 1 ); // Input\n')
+                f.write(f'\t{input}Pin.setPinMode(1); // Input\n')
             for output in self.outputs:
-                f.write(f'\t{output}Pin.setPinMode( 3 ); // Output\n')
+                f.write(f'\t{output}Pin.setPinMode(3); // Output\n')
             f.write('\n')    
             for input in self.inputs:
-                f.write(f'\t{input}Pin.changeCallBack( element, true );\n')
+                f.write(f'\t{input}Pin.changeCallBack(element, true);\n')
             f.write('\n')
             for output in self.outputs:
-                f.write(f'\t{output}Pin.setVoltage( 0 );\n')
+                f.write(f'\t{output}Pin.setOutState(0);\n')
             f.write('}\n')
 
             # voltChanged function
