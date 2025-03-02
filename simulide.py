@@ -11,7 +11,6 @@ class Component():
         self.statements = statements
         os.makedirs(f'./{name}', exist_ok=True)
 
-
     def create_package(self):
         # root element
         packageB = ET.Element("packageB", 

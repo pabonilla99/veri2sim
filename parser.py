@@ -107,7 +107,11 @@ def p_wire_declaration(p):
 
 def p_assignment(p):
     '''assignment : ASSIGN IDENTIFIER EQ expression SEMI'''
-    p[0] = ('assign', p[2], p[4])
+    if p[2] in symbol_table.symbols:
+        if symbol_table.symbols[p[2]].type == 'output': # output <= statement
+            p[0] = f'{p[2]}Pin.setVoltage( {p[4]} );\n'
+        else:                                           # wire <= statement
+            p[0] = f'{p[2]} = {p[4]};\n' 
 
 def p_expression_binop(p):
     '''expression : expression PLUS expression
@@ -127,7 +131,7 @@ def p_expression_binop(p):
                   | expression BITXOR expression
                   | expression LSHIFT expression
                   | expression RSHIFT expression'''
-    p[0] = (p[2], p[1], p[3])
+    p[0] = f'{p[2]} {p[1]} {p[3]}'
 
 # Definición de la precedencia de los operadores
 precedence = (
@@ -145,11 +149,11 @@ def p_expression_unop(p):
     '''expression : MINUS expression %prec NOT
                   | NOT expression
                   | BITNOT expression'''
-    p[0] = f'({p[1]}{p[2]})'
+    p[0] = f'{p[1]}{p[2]}'
 
 def p_expression_group(p):
     '''expression : LPAREN expression RPAREN'''
-    p[0] = p[2]
+    p[0] = f'({p[2]})'
 
 def p_expression_number(p):
     '''expression : NUMBER'''
@@ -157,7 +161,11 @@ def p_expression_number(p):
 
 def p_expression_identifier(p):
     '''expression : IDENTIFIER'''
-    p[0] = p[1]
+    if p[1] in symbol_table.symbols:
+        if symbol_table.symbols[p[1]].type == 'input':
+            p[0] = f'{p[1]}Pin.getVoltage()'
+        else:
+            p[0] = p[1]
 
 # Manejo de errores
 def p_error(p):
