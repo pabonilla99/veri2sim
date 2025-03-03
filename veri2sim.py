@@ -1,7 +1,7 @@
 import argparse
-from lexer import lexer
-from parser import parser
-from simulide import Component
+from src.lexer import lexer
+from src.parser import parser
+from src.simulide import Component
 import os
 import shutil
 
