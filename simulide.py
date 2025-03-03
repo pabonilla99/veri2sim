@@ -131,9 +131,10 @@ class Component():
              
         # -------------------- pin array inputs/outputs --------------------
         for symbol in self.symbols:
+            type = self.symbols[symbol].type 
             msb = self.symbols[symbol].msb 
             lsb = self.symbols[symbol].lsb 
-            if msb != lsb:        # pin array
+            if type in ['input', 'output'] and msb != lsb:        # pin array
                 ioport = ET.SubElement(iou, "ioport", 
                                        name=f"{symbol}Port", 
                                        pins=",".join([f"{symbol}_{i}" for i in range(lsb, msb+1)]))
@@ -160,7 +161,7 @@ class Component():
                     if msb == lsb: 
                         f.write(f'IoPin@ {symbol}Pin = component.getPin("{symbol}");\n')
                     else:
-                        f.write(f'IoPort@ {symbol}Port = component.getPort("{symbol}");\n')
+                        f.write(f'IoPort@ {symbol}Port = component.getPort("{symbol}Port");\n')
 
             # -------------------- global variables and functions --------------------
             f.write('\n// ___global_definitions___')
