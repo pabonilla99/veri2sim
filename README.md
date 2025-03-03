@@ -1,6 +1,6 @@
 # Verilog to SimulIDE blocks converter
 
-This is a simple _*Verilog*_ to _*SimulIDE*_ block converter written in _Python_ using the _PLY_ module.
+This is a simple _*Verilog*_ to [_*SimulIDE*_](https://simulide.com/p/) block converter written in _Python_ using the _PLY_ module.
 
 ## Usage
 
@@ -14,6 +14,9 @@ verilog_file.package
 verilog_file.mcu
 verilog_file.as
 ```
+
+These files are necessary to [implement a block on SimulIDE by a script](https://simulide.com/p/scripted/).
+
 
 ## Limitations
 For now `veri2sim` only supports simple examples including `wire` declarations and the `assign` command
@@ -90,5 +93,9 @@ void voltChanged()
 	bPin.setOutState(w);
 }
 ```
+
+### On SimulIDE
+
+![](/assets/simulation.png)
 
 
