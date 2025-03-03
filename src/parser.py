@@ -1,5 +1,5 @@
 import ply.yacc as yacc
-from lexer import tokens
+from src.lexer import tokens
 
 # Class to store Verilog module information
 class VerilogModule:
@@ -53,26 +53,18 @@ def p_port_list(p):
     '''port_list : port
                  | port_list COMMA port'''
     if len(p) == 2:
-        p[0] = {'inputs': [], 'outputs': []}
-        if p[1][0] == 'input':
-            p[0]['inputs'].append(p[1][1])
-        else:
-            p[0]['outputs'].append(p[1][1])
-    else:
         p[0] = p[1]
-        if p[3][0] == 'input':
-            p[0]['inputs'].append(p[3][1])
-        else:
-            p[0]['outputs'].append(p[3][1])
+    else:
+        p[0] = f'{p[1],p[3]}'
 
 def p_port(p):
     '''port : INPUT range_opt IDENTIFIER
             | OUTPUT range_opt IDENTIFIER'''
     if p[2]:
-        p[0] = (p[1], f'[{p[2][0]}:{p[2][1]}]{p[3]}')  # when bit array
+        p[0] = f'{p[1]}, {p[3]}'         # when bit array
         msb, lsb = p[2]
     else:        
-        p[0] = (p[1], p[3])         # when single bit
+        p[0] = f'{p[1]}, {p[3]}'         # when single bit
         msb, lsb = 0, 0
 
     # Add the port to the symbol table
@@ -94,16 +86,12 @@ def p_module_items(p):
     '''module_items : module_item
                     | module_items module_item'''
     if len(p) == 2:
-        p[0] = {'wires': [], 'statements': []}
-        if p[1][0] == 'wire':
-            p[0]['wires'].append(p[1][1])
-        else:
+        p[0] = {'statements': []}
+        if '// wire ' not in p[1]:
             p[0]['statements'].append(p[1])
     else:
         p[0] = p[1]
-        if p[2][0] == 'wire':
-            p[0]['wires'].append(p[2][1])
-        else:
+        if '// wire ' not in p[2]:
             p[0]['statements'].append(p[2])
 
 def p_module_item(p):
@@ -113,7 +101,7 @@ def p_module_item(p):
 
 def p_wire_declaration(p):
     '''wire_declaration : WIRE range_opt IDENTIFIER SEMI'''
-    p[0] = ('wire', p[3])
+    p[0] = f'// wire {p[3]}'
     if p[2]:
         msb, lsb = p[2]
     else:
