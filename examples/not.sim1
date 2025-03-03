@@ -1,0 +1,19 @@
+<circuit version="1.1.0-SR1" rev="2005" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
+
+<item itemtype="MCU" CircId="not-1" mainComp="false" Show_id="true" Show_Val="true" Pos="-60,-132" rotation="0" hflip="1" vflip="1" label="not-1" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" MainMcu="true" />
+
+<item itemtype="Clock" CircId="Clock-2" mainComp="false" Show_id="false" Show_Val="false" Pos="-116,-124" rotation="0" hflip="1" vflip="1" label="Clock-2" idLabPos="-64,-24" labelrot="0" valLabPos="-16,8" valLabRot="0" Out="true" Running="true" Voltage="5 V" Freq="1 Hz" Always_On="true" />
+
+<item itemtype="LedBar" CircId="LedBar-3" mainComp="false" Show_id="false" Show_Val="false" Pos="60,-100" rotation="0" hflip="1" vflip="1" label="LedBar-3" idLabPos="-16,-44" labelrot="0" valLabPos="-16,-56" valLabRot="0" Color="Yellow" Size="2 _Leds" Grounded="true" Threshold="2.4 V" MaxCurrent="30 mA" Resistance="0.6 Ω" />
+
+<item itemtype="Node" CircId="Node-4" mainComp="false" Pos="-84,-124" />
+
+<item itemtype="Connector" uid="Connector-2" startpinid="LedBar-3-led0-pinP" endpinid="not-1-SinglePinsPortb" pointList="44,-124,12,-124" />
+
+<item itemtype="Connector" uid="Connector-3" startpinid="LedBar-3-led1-pinP" endpinid="Node-4-1" pointList="44,-116,28,-116,28,-108,-84,-108,-84,-124" />
+
+<item itemtype="Connector" uid="Connector-4" startpinid="Clock-2-outnod" endpinid="Node-4-0" pointList="-100,-124,-84,-124" />
+
+<item itemtype="Connector" uid="Connector-5" startpinid="Node-4-2" endpinid="not-1-SinglePinsPorta" pointList="-84,-124,-68,-124" />
+
+</circuit>
