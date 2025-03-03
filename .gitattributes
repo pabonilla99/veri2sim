@@ -43,3 +43,4 @@
 # Mark specific files or patterns as vendored
 .vsode/** linguist-vendored
 *.json linguist-vendored
+*.sim1 linguist-vendored
