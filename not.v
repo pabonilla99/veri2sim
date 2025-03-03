@@ -3,7 +3,7 @@ module not_not (input a,
                 output c,
                 output [1:0] d );
     wire w;
-    wire v;
+    wire [1:0] v;
     assign w = ~a;
     assign c = w;
     assign v = ~b;
