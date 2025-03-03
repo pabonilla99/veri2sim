@@ -126,8 +126,9 @@ class Component():
             lsb = self.symbols[symbol].lsb
             if type in ['input', 'output'] and msb == lsb: 
                 pin_list += symbol + ','
-
-        ioport = ET.SubElement(iou, "ioport", name="SinglePinsPort", pins=pin_list[:-1])
+        
+        if pin_list != '':
+            ioport = ET.SubElement(iou, "ioport", name="SinglePinsPort", pins=pin_list[:-1])
              
         # -------------------- pin array inputs/outputs --------------------
         for symbol in self.symbols:
