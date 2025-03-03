@@ -12,8 +12,8 @@ class Component():
     def single_inputs(self):
         counter = 0
         for symbol in self.symbols:
-            msb   = self.symbols[symbol].msb 
-            lsb   = self.symbols[symbol].lsb 
+            msb = self.symbols[symbol].msb 
+            lsb = self.symbols[symbol].lsb 
             if self.symbols[symbol].type == 'input':
                 if msb == lsb:                  # single input
                     counter += 1
@@ -24,8 +24,8 @@ class Component():
     def single_outputs(self):
         counter = 0
         for symbol in self.symbols:
-            msb   = self.symbols[symbol].msb 
-            lsb   = self.symbols[symbol].lsb 
+            msb = self.symbols[symbol].msb 
+            lsb = self.symbols[symbol].lsb 
             if type == 'output':
                 if msb == lsb:                  # single output
                     counter += 1
@@ -42,10 +42,11 @@ class Component():
                               background="", 
                               type="None")
 
+        # -------------------- inputs --------------------
         i = 0
         for symbol in self.symbols:
-            msb   = self.symbols[symbol].msb 
-            lsb   = self.symbols[symbol].lsb 
+            msb = self.symbols[symbol].msb 
+            lsb = self.symbols[symbol].lsb 
             if self.symbols[symbol].type == 'input':
                 if msb == lsb:        # single input
                     pin = ET.SubElement(packageB, "pin", 
@@ -71,21 +72,11 @@ class Component():
                                             label=f"{symbol}_{j}")
                         i += 1
 
-        # for index, value in enumerate(self.inputs):     # inputs
-        #     pin = ET.SubElement(packageB, "pin", 
-        #                         type="",
-        #                         xpos="-8",
-        #                         ypos=f"{8+(index*8)}",
-        #                         angle="180",
-        #                         length="8",  
-        #                         space="0",   
-        #                         id=f"{value}",     
-        #                         label=f"{value}")
-
+        # -------------------- outputs --------------------
         i = 0
         for symbol in self.symbols:
-            msb   = self.symbols[symbol].msb 
-            lsb   = self.symbols[symbol].lsb 
+            msb = self.symbols[symbol].msb 
+            lsb = self.symbols[symbol].lsb 
             if self.symbols[symbol].type == 'output':
                 if msb == lsb:        # single output            
                     pin = ET.SubElement(packageB, "pin", 
@@ -111,18 +102,6 @@ class Component():
                                             label=f"{symbol}_{j}")
                         i += 1
 
-        # for index, value in enumerate(self.outputs):     # outputs
-        #     pin = ET.SubElement(packageB, "pin", 
-        #                         type="",
-        #                         xpos="72",
-        #                         ypos=f"{8+(index*8)}",
-        #                         angle="0",
-        #                         length="8",  
-        #                         space="0",   
-        #                         id=f"{value}",     
-        #                         label=f"{value}")
-
-
         # elements tree
         tree = ET.ElementTree(packageB)
 
@@ -139,15 +118,25 @@ class Component():
                          core="scripted", 
                          script=f"{self.name}.as")
 
-        # # inputs
-        # ioport = ET.SubElement(iou, "ioport", 
-        #                        name="InputPort", 
-        #                        pins=",".join(self.inputs))
-        
-        # # outputs
-        # ioport = ET.SubElement(iou, "ioport", 
-        #                        name="OutputPort", 
-        #                        pins=",".join(self.outputs))
+        # -------------------- single inputs/outputs --------------------
+        pin_list = ''
+        for symbol in self.symbols:
+            type = self.symbols[symbol].type 
+            msb = self.symbols[symbol].msb 
+            lsb = self.symbols[symbol].lsb
+            if type in ['input', 'output'] and msb == lsb: 
+                pin_list += symbol + ','
+
+        ioport = ET.SubElement(iou, "ioport", name="SinglePinsPort", pins=pin_list[:-1])
+             
+        # -------------------- pin array inputs/outputs --------------------
+        for symbol in self.symbols:
+            msb = self.symbols[symbol].msb 
+            lsb = self.symbols[symbol].lsb 
+            if msb != lsb:        # pin array
+                ioport = ET.SubElement(iou, "ioport", 
+                                       name=f"{symbol}Port", 
+                                       pins=",".join([f"{symbol}_{i}" for i in range(lsb, msb+1)]))
         
         # element tree
         tree = ET.ElementTree(iou)
@@ -162,11 +151,15 @@ class Component():
         with open(f"./output/{self.name}/{self.name}.as", "w") as f:
             f.write('// This file was generated by veri2sim\n\n')
 
-            # # inputs and outputs
-            # for input in self.inputs:
-            #     f.write(f'IoPin@ {input}Pin = component.getPin("{input}");\n')
-            # for output in self.outputs:
-            #     f.write(f'IoPin@ {output}Pin = component.getPin("{output}");\n')
+            # -------------------- inputs/outputs --------------------
+            for symbol in self.symbols:
+                type = self.symbols[symbol].type 
+                msb = self.symbols[symbol].msb 
+                lsb = self.symbols[symbol].lsb
+                if type in ['input', 'output'] and msb == lsb: 
+                    f.write(f'IoPin@ {symbol}Pin = component.getPin("{symbol}");\n')
+                else:
+                    f.write(f'IoPort@ {symbol}Port = component.getPort("{symbol}");\n')
 
             # # global variables and functions
             # f.write('\n// ___global_definitions___')
