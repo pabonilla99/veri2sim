@@ -7,27 +7,27 @@ reserved = {
     'input': 'INPUT',
     'output': 'OUTPUT',
     'wire': 'WIRE',
-    'reg': 'REG',
-    'always': 'ALWAYS',
-    'begin': 'BEGIN',
-    'end': 'END',
-    'if': 'IF',
-    'else': 'ELSE',
-    'case': 'CASE',
-    'endcase': 'ENDCASE',
-    'default': 'DEFAULT',
+    # 'reg': 'REG',
+    # 'always': 'ALWAYS',
+    # 'begin': 'BEGIN',
+    # 'end': 'END',
+    # 'if': 'IF',
+    # 'else': 'ELSE',
+    # 'case': 'CASE',
+    # 'endcase': 'ENDCASE',
+    # 'default': 'DEFAULT',
     'assign': 'ASSIGN',
-    'initial': 'INITIAL',
-    'posedge': 'POSEDGE',
-    'negedge': 'NEGEDGE',
-    'for': 'FOR',
-    'while': 'WHILE',
-    'repeat': 'REPEAT',
-    'forever': 'FOREVER',
-    'function': 'FUNCTION',
-    'endfunction': 'ENDFUNCTION',
-    'task': 'TASK',
-    'endtask': 'ENDTASK'
+    # 'initial': 'INITIAL',
+    # 'posedge': 'POSEDGE',
+    # 'negedge': 'NEGEDGE',
+    # 'for': 'FOR',
+    # 'while': 'WHILE',
+    # 'repeat': 'REPEAT',
+    # 'forever': 'FOREVER',
+    # 'function': 'FUNCTION',
+    # 'endfunction': 'ENDFUNCTION',
+    # 'task': 'TASK',
+    # 'endtask': 'ENDTASK'
 }
 
 # Lista de tokens
@@ -40,8 +40,8 @@ tokens = [
     'DIVIDE',
     'LPAREN',
     'RPAREN',
-    'LBRACE',
-    'RBRACE',
+    # 'LBRACE',
+    # 'RBRACE',
     'SEMI',
     'COMMA',
     'EQ',
@@ -59,7 +59,10 @@ tokens = [
     'BITXOR',
     'BITNOT',
     'LSHIFT',
-    'RSHIFT'
+    'RSHIFT',
+    'COLON',
+    'RSQUARE',
+    'LSQUARE'
 ] + list(reserved.values())
 
 # Reglas de expresiones regulares para tokens simples
@@ -69,8 +72,8 @@ t_TIMES = r'\*'
 t_DIVIDE = r'/'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-t_LBRACE = r'\{'
-t_RBRACE = r'\}'
+# t_LBRACE = r'\{'
+# t_RBRACE = r'\}'
 t_SEMI = r';'
 t_COMMA = r','
 t_EQ = r'='
@@ -89,6 +92,9 @@ t_BITXOR = r'\^'
 t_BITNOT = r'~'
 t_LSHIFT = r'<<'
 t_RSHIFT = r'>>'
+t_COLON = r':'
+t_RSQUARE = r'\]'
+t_LSQUARE = r'\['
 
 # Regla para números
 def t_NUMBER(t):

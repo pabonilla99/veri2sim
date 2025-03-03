@@ -51,9 +51,7 @@ if args.command == 'compile':
 
     # Create the SimulIDE component
     component = Component(result.name, 
-                          result.inputs,
-                          result.outputs,
-                          result.wires,
+                          result.symbols,
                           result.statements)
 
     # Generate the output files
