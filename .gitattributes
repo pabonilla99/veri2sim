@@ -44,3 +44,4 @@
 .vsode/** linguist-vendored
 *.json linguist-vendored
 *.sim1 linguist-vendored
+*.v linguist-vendored
