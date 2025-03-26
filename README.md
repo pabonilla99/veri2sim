@@ -17,11 +17,15 @@ verilog_file.as
 
 These files are necessary to [implement a block on SimulIDE by a script](https://simulide.com/p/scripted/).
 
+## Prerequisites
+Python 3.6 or higher with the following modules:
+- `ply`
+- `lxml`
 
 ## Limitations
 For now `veri2sim` only supports simple examples including `wire` declarations and the `assign` command
 
-## Simple NOT example
+## Simple NOT gate example
 
 This verilog file `not.v`:
 
