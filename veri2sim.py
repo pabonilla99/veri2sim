@@ -11,6 +11,7 @@ Create a SimulIDE's component block for `file.v` as these 3 files:
 `file.package`, `file.mcu` and `file.as` (AngelScript).
 '''
 
+
 # Set up argument parser
 cli = argparse.ArgumentParser(description=description)
 cli.add_argument('-c', '--compile', dest='command', action='store_const', const='compile', help='Compile the Verilog file')
@@ -50,7 +51,7 @@ if args.command == 'compile':
         exit(1)
 
     # Create the SimulIDE component
-    component = Component(result.name, 
+    component = Component(result.name,
                           result.symbols,
                           result.statements)
 

@@ -36,6 +36,9 @@ coverage.xml
 # VS Code
 .vscode/
 
+# Zed
+.zed/
+
 # PyCharm
 .idea/
 
@@ -44,3 +47,5 @@ coverage.xml
 
 # Windows
 Thumbs.db
+
+.ropeproject/
