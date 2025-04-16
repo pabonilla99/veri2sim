@@ -26,5 +26,5 @@ void reset()
 void voltChanged()
 {
 	// ___implementation___
-	cPin.setOutState(^ aPin.getInpState() bPin.getInpState());
+	cPin.setOutState(aPin.getInpState() ^ bPin.getInpState());
 }
