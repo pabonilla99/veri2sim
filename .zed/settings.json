@@ -1,4 +1,26 @@
 {
+  "languages": {
+    "Python": {
+      "pythonPath": ".venv/bin/python",
+      "format_on_save": {
+        "external": {
+          "command": ".venv/bin/python",
+          "arguments": ["-m", "ruff", "format", "-"]
+        }
+      }
+    }
+  },
+
+  "lsp": {
+    "pyright": {
+      "settings": {
+        "Python": {
+          "pythonPath": ".venv/bin/python"
+        }
+      }
+    }
+  },
+
   "file_types": {
     "XML": ["sim1", "package", "cpu"],
     "C++": ["as"],
