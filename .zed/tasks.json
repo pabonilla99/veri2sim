@@ -1,0 +1,14 @@
+[
+  {
+    "label": "veri2sim: compile",
+    "command": ".venv/bin/python",
+    "args": ["veri2sim.py", "--compile", "$ZED_FILE"],
+    "use_new_terminal": false
+  },
+  {
+    "label": "veri2sim: clean output folder",
+    "command": ".venv/bin/python",
+    "args": ["veri2sim.py", "--clean"],
+    "use_new_terminal": false
+  }
+]

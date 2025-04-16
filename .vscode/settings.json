@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "*.package": "xml",
+    "*.mcu": "xml",
+    "*.sim1": "xml",
+    "*.v": "verilog"
+  }
+}

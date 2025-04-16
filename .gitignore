@@ -34,10 +34,10 @@ coverage.xml
 .ipynb_checkpoints
 
 # VS Code
-.vscode/
+#.vscode/
 
 # Zed
-.zed/
+#.zed/
 
 # PyCharm
 .idea/
