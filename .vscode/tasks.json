@@ -12,6 +12,18 @@
       "presentation": {
         "showReuseMessage": false
       }
+    },
+    {
+      "label": "veri2sim: clean output file",
+      "type": "shell",
+      "linux": {
+        "command": ["python", "veri2sim.py", "--clean"]
+      },
+      "problemMatcher": ["$tsc"],
+      "group": "build",
+      "presentation": {
+        "showReuseMessage": false
+      }
     }
   ]
 }
