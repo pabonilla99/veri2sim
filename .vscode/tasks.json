@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "veri2sim: compile",
+      "type": "shell",
+      "linux": {
+        "command": ["python", "veri2sim.py", "--compile", "$ZED_FILE"]
+      },
+      "problemMatcher": ["$tsc"],
+      "group": "build",
+      "presentation": {
+        "showReuseMessage": false
+      }
+    }
+  ]
+}
