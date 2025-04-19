@@ -36,6 +36,17 @@ class SymbolTable:
         else:
             print(f"Warning: Symbol {name} already exists in the symbol table.")
 
+    def modify_symbol(self, name, sym_type=None, msb=None, lsb=None):
+        if name in self.symbols:
+            if sym_type is not None:
+                self.symbols[name].type = sym_type
+            if msb is not None:
+                self.symbols[name].msb = msb
+            if lsb is not None:
+                self.symbols[name].lsb = lsb
+        else:
+            print(f"Error: Symbol {name} does not exist in the symbol table.")
+
     def __str__(self):
         return "\n".join(str(symbol) for symbol in self.symbols.values())
 
@@ -66,16 +77,26 @@ def p_port_list(p):
 
 def p_port(p):
     """port : INPUT range_opt IDENTIFIER
-    | OUTPUT range_opt IDENTIFIER"""
-    if p[2]:
-        p[0] = f"{p[1]}, {p[3]}"  # when bit array
-        msb, lsb = p[2]
+    | OUTPUT range_opt IDENTIFIER
+    | range_opt IDENTIFIER"""
+    if len(p) == 4:  # INPUT or OUTPUT defined
+        port_type = p[1]
+        range_opt = p[2]
+        identifier = p[3]
+    else:  # No INPUT or OUTPUT defined
+        port_type = "unspecified"
+        range_opt = p[1]
+        identifier = p[2]
+
+    if range_opt:
+        p[0] = f"{port_type}, {identifier}"  # when bit array
+        msb, lsb = range_opt
     else:
-        p[0] = f"{p[1]}, {p[3]}"  # when single bit
+        p[0] = f"{port_type}, {identifier}"  # when single bit
         msb, lsb = 0, 0
 
     # Add the port to the symbol table
-    symbol_table.add_symbol(p[3], p[1], msb, lsb)
+    symbol_table.add_symbol(identifier, port_type, msb, lsb)
 
 
 def p_range_opt(p):
@@ -109,6 +130,24 @@ def p_module_item(p):
     """module_item : wire_declaration
     | assignment"""
     p[0] = p[1]
+
+
+def p_identifier_definition(p):
+    """identifier_definition : INPUT identifier_list SEMI
+    | OUTPUT identifier_list SEMI"""
+    port_type = p[1]
+    identifiers = p[2]
+    for identifier in identifiers:
+        symbol_table.modify_symbol(identifier, port_type, 0, 0)
+
+
+def p_identifier_list(p):
+    """identifier_list : IDENTIFIER
+    | identifier_list COMMA IDENTIFIER"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
 
 
 def p_wire_declaration(p):
