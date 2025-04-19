@@ -1,6 +1,6 @@
 [
   {
-    "label": "veri2sim: compile",
+    "label": "veri2sim: compile $ZED_FILE",
     "command": ".venv/bin/python",
     "args": ["veri2sim.py", "--compile", "$ZED_FILE"],
     "use_new_terminal": false
@@ -9,6 +9,12 @@
     "label": "veri2sim: clean output folder",
     "command": ".venv/bin/python",
     "args": ["veri2sim.py", "--clean"],
+    "use_new_terminal": false
+  },
+  {
+    "label": "Python (.venv): run $ZED_FILE",
+    "command": "source .venv/bin/activate; python",
+    "args": ["$ZED_FILE"],
     "use_new_terminal": false
   }
 ]
