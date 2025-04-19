@@ -48,4 +48,8 @@ coverage.xml
 # Windows
 Thumbs.db
 
+# other generated files
 .ropeproject/
+src/parsetab.py
+src/parser.out
+src/__pycache__/

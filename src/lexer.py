@@ -97,6 +97,12 @@ t_RSQUARE = r"\]"
 t_LSQUARE = r"\["
 
 
+# Rule to ignore Verilog comments
+def t_COMMENT(t):
+    r"//.*|/\*[\s\S]*?\*/"
+    pass
+
+
 # Rule for numbers
 def t_NUMBER(t):
     r"\d+"

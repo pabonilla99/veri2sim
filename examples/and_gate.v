@@ -1,10 +1,8 @@
 module and_gate (
-    a,
-    b,
-    c
+    input  a,
+    input  b,
+    output c
 );
-    input a, b;
-    output c;
 
     assign c = a & b;
 endmodule

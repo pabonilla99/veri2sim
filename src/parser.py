@@ -118,17 +118,18 @@ def p_module_items(p):
     | module_items module_item"""
     if len(p) == 2:
         p[0] = {"statements": []}
-        if "// wire " not in p[1]:
-            p[0]["statements"].append(p[1])
+        # if "// wire " not in p[1]:
+        p[0]["statements"].append(p[1])
     else:
         p[0] = p[1]
-        if "// wire " not in p[2]:
-            p[0]["statements"].append(p[2])
+        # if "// wire " not in p[2]:
+        p[0]["statements"].append(p[2])
 
 
 def p_module_item(p):
     """module_item : wire_declaration
-    | assignment"""
+    | assignment
+    | identifier_definition"""
     p[0] = p[1]
 
 
