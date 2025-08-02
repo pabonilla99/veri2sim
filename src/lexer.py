@@ -63,6 +63,9 @@ tokens = [
     "COLON",
     "RSQUARE",
     "LSQUARE",
+    "AT",         
+    "BEGIN",      
+    "END",        
 ] + list(reserved.values())
 
 # Regular expression rules for simple tokens
@@ -95,6 +98,9 @@ t_RSHIFT = r">>"
 t_COLON = r":"
 t_RSQUARE = r"\]"
 t_LSQUARE = r"\["
+t_AT = r"@"
+t_BEGIN = r"begin"
+t_END = r"end"
 
 
 # Rule to ignore Verilog comments
