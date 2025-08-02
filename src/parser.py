@@ -249,6 +249,44 @@ def p_expression_identifier(p):
             p[0] = p[1]
 
 
+def p_always_block(p):
+    """module_item : always_block"""
+    p[0] = p[1]
+
+def p_always_block_def(p):
+    """always_block : ALWAYS AT sensitivity_list statement_block"""
+    p[0] = f"always @ {p[3]} {p[4]}"
+
+def p_sensitivity_list(p):
+    """sensitivity_list : LPAREN sensitivity_items RPAREN"""
+    p[0] = p[2]
+
+def p_sensitivity_items(p):
+    """sensitivity_items : IDENTIFIER
+    | sensitivity_items OR IDENTIFIER"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
+
+def p_statement_block(p):
+    """statement_block : BEGIN statement_list END"""
+    p[0] = p[2]
+
+def p_statement_list(p):
+    """statement_list : statement
+    | statement_list statement"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[2]]
+
+def p_statement(p):
+    """statement : assignment
+    | empty"""
+    p[0] = p[1]
+
+
 # Error handling
 def p_error(p):
     print("Syntax error in input!")
