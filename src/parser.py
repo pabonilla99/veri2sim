@@ -63,7 +63,8 @@ def p_module(p):
 
     # Add the module to the symbol table
     symbol_table.add_symbol(p[2], "module")
-    print(symbol_table)
+    # print(symbol_table)
+    print("module:\t", p[2])
 
 
 def p_port_list(p):
@@ -71,8 +72,11 @@ def p_port_list(p):
     | port_list COMMA port"""
     if len(p) == 2:
         p[0] = p[1]
+        print("port_list:\t", p[1]) 
     else:
         p[0] = f"{p[1], p[3]}"
+        print("port_list:\t", f"{p[1], p[3]}") 
+    
 
 
 def p_port(p):
@@ -128,8 +132,10 @@ def p_module_items(p):
 
 def p_module_item(p):
     """module_item : wire_declaration
-    | assignment
-    | identifier_definition"""
+    | identifier_definition
+    | assign_block
+    | always_block
+    | empty"""
     p[0] = p[1]
 
 
@@ -163,16 +169,21 @@ def p_wire_declaration(p):
     symbol_table.add_symbol(p[3], "wire", msb, lsb)
 
 
+def p_assign_block(p):
+    """assign_block : ASSIGN assignment SEMI"""
+    p[0] = f"assign {p[2]};"
+
 def p_assignment(p):
-    """assignment : ASSIGN IDENTIFIER EQ expression SEMI"""
-    if p[2] in symbol_table.symbols:
-        if symbol_table.symbols[p[2]].type == "output":  # output <= statement
-            if symbol_table.symbols[p[2]].msb == symbol_table.symbols[p[2]].lsb:
-                p[0] = f"{p[2]}Pin.setOutState({p[4]})"
+    """assignment : IDENTIFIER EQ expression"""
+    print(f"assignment: {p[1]} = {p[3]}")
+    if p[1] in symbol_table.symbols:
+        if symbol_table.symbols[p[1]].type == "output":  # output <= statement
+            if symbol_table.symbols[p[1]].msb == symbol_table.symbols[p[1]].lsb:
+                p[0] = f"{p[1]}Pin.setOutState({p[3]})"
             else:
-                p[0] = f"{p[2]}Port.setOutState({p[4]})"
+                p[0] = f"{p[1]}Port.setOutState({p[3]})"
         else:  # wire <= statement
-            p[0] = f"{p[2]} = {p[4]}"
+            p[0] = f"{p[1]} = {p[3]}"
 
 
 def p_expression_binop(p):
@@ -250,10 +261,6 @@ def p_expression_identifier(p):
 
 
 def p_always_block(p):
-    """module_item : always_block"""
-    p[0] = p[1]
-
-def p_always_block_def(p):
     """always_block : ALWAYS AT sensitivity_list statement_block"""
     p[0] = f"always @ {p[3]} {p[4]}"
 
@@ -283,7 +290,7 @@ def p_statement_list(p):
 
 def p_statement(p):
     """statement : assignment
-    | empty"""
+    | empty""" 
     p[0] = p[1]
 
 

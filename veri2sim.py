@@ -64,6 +64,7 @@ if args.command == "compile":
 
     # Generate the custom output
     if result:
+        print("\n-------------------- Parsing Result --------------------")
         print(result)
     else:
         print("Error analyzing the Verilog module.")

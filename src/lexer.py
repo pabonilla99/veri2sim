@@ -7,7 +7,7 @@ reserved = {
     "input": "INPUT",
     "output": "OUTPUT",
     "wire": "WIRE",
-    'reg': 'REG',
+    # 'reg': 'REG',
     'always': 'ALWAYS',
     # 'begin': 'BEGIN',
     # 'end': 'END',
@@ -40,8 +40,8 @@ tokens = [
     "DIVIDE",
     "LPAREN",
     "RPAREN",
-    'LBRACE',
-    'RBRACE',
+    # 'LBRACE',
+    # 'RBRACE',
     "SEMI",
     "COMMA",
     "EQ",
@@ -75,8 +75,8 @@ t_TIMES = r"\*"
 t_DIVIDE = r"/"
 t_LPAREN = r"\("
 t_RPAREN = r"\)"
-t_LBRACE = r'\{'
-t_RBRACE = r'\}'
+# t_LBRACE = r'\{'
+# t_RBRACE = r'\}'
 t_SEMI = r";"
 t_COMMA = r","
 t_EQ = r"="

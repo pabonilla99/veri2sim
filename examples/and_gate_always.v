@@ -4,7 +4,8 @@ module and_gate (
     output c
 );
 
-    always @(a or b) begin
-        c = a & b;
-    end
+    // always @(a or b) begin
+    //     c = a & b;
+    // end
+
 endmodule
