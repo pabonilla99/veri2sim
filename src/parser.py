@@ -265,14 +265,14 @@ def p_expression_identifier(p):
 
 def p_always_block(p):
     """always_block : ALWAYS AT sensitivity_list statement_block"""
-    p[0] = f'// --- always ---\n// {p[3]}\n'
+    p[0] = f'// --- always ---\n// @({p[3]})\n'
     for stmt in p[4]:
         p[0] += f"{stmt};\n"
     p[0] += '// --------------'
 
 def p_sensitivity_list(p):
     """sensitivity_list : LPAREN sensitivity_items RPAREN"""
-    p[0] = p[2]
+    p[0] = "".join(f"{id}, " for id in p[2])[:-2]
 
 def p_sensitivity_items(p):
     """sensitivity_items    : IDENTIFIER
