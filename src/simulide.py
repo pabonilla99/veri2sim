@@ -200,7 +200,7 @@ class Component():
             f.write('}\n')
 
             # -------------------- voltChanged function --------------------
-            f.write('\nvoid voltChanged()\n{\n\t// ----- Implementation -----\n\n')
+            f.write('\nvoid voltChanged()\n{\n')
             for statement in self.statements:
                 f.write(f'\t{statement}\n')     
             f.write('}\n')
