@@ -1,4 +1,4 @@
-module mux_2_1 (
+module mux_2_1_B (
     input sel,
     input  a,
     input  b,
@@ -6,11 +6,10 @@ module mux_2_1 (
 );
 
     always @(a or b or sel) begin
-        if (sel) begin
+        if (sel)
             c = b;  // If sel is high, output b
-        end else begin
+        else
             c = a;  // If sel is low, output a
-        end
     end
 
 endmodule

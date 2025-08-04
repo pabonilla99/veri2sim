@@ -1,4 +1,4 @@
-module mux_2_1 (
+module ALU (
     input  [1:0] sel,
     input  [3:0] a,
     input  [3:0] b,
@@ -13,15 +13,15 @@ module mux_2_1 (
         end 
         else if (sel == 1) begin
             c = a & b;  
-            carry = 0;|
+            carry = 0;
         end
         else if (sel == 2) begin
             c = a | b;  
-            carry = 0;|
+            carry = 0;
         end
         else begin
-            {carry:c} = a + b;  
-            carry = 0;
+            // {carry,c} = a + b;  
+            carry = 1;  c = 3;
         end
     end
 

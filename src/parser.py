@@ -265,7 +265,10 @@ def p_expression_identifier(p):
 
 def p_always_block(p):
     """always_block : ALWAYS AT sensitivity_list statement_block"""
-    p[0] = f'// --- always ---\n// {p[3]}\n{p[4]}// --------------'
+    p[0] = f'// --- always ---\n// {p[3]}\n'
+    for stmt in p[4]:
+        p[0] += f"{stmt};\n"
+    p[0] += '// --------------'
 
 def p_sensitivity_list(p):
     """sensitivity_list : LPAREN sensitivity_items RPAREN"""
@@ -281,10 +284,8 @@ def p_sensitivity_items(p):
 
 def p_statement_block(p):
     """statement_block : BEGIN statement_list END"""
-    p[0] = ''
     print("statement_block:\t", p[2])
-    for stmt in p[2]:
-        p[0] += f"{stmt};\n"
+    p[0] = p[2]
 
 def p_statement_list(p):
     """statement_list : statement
@@ -307,7 +308,7 @@ def p_if_block(p):
         body = "{\n" + "".join(f"{stmt};\n" for stmt in p[5]) + "}"
     else:
         body = f"{p[5]}"
-    p[0] = f"if ({p[3]}) {body}\n{p[6]}"
+    p[0] = f"if ({p[3]}) {body};\n{p[6]}"
 
 def p_else_block_opt(p):
     """else_block_opt   : ELSE statement
