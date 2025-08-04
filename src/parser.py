@@ -68,8 +68,8 @@ def p_module(p):
 
 
 def p_port_list(p):
-    """port_list : port
-    | port_list COMMA port"""
+    """port_list    : port
+                    | port_list COMMA port"""
     if len(p) == 2:
         p[0] = p[1]
         print("port_list:\t", p[1]) 
@@ -80,9 +80,9 @@ def p_port_list(p):
 
 
 def p_port(p):
-    """port : INPUT range_opt IDENTIFIER
-    | OUTPUT range_opt IDENTIFIER
-    | range_opt IDENTIFIER"""
+    """port     : INPUT range_opt IDENTIFIER
+                | OUTPUT range_opt IDENTIFIER
+                | range_opt IDENTIFIER"""
     if len(p) == 4:  # INPUT or OUTPUT defined
         port_type = p[1]
         range_opt = p[2]
@@ -101,6 +101,7 @@ def p_port(p):
 
     # Add the port to the symbol table
     symbol_table.add_symbol(identifier, port_type, msb, lsb)
+    print("port:\t", identifier) 
 
 
 def p_range_opt(p):
@@ -114,7 +115,8 @@ def p_range_opt(p):
 
 def p_empty(p):
     """empty :"""
-    pass
+    p[0] = '// empty'
+    # pass
 
 
 def p_module_items(p):
@@ -165,13 +167,14 @@ def p_wire_declaration(p):
     else:
         msb, lsb = 0, 0
 
+        print("port_list:\t", f"{p[1], p[3]}") 
     # Add the wire to the symbol table
     symbol_table.add_symbol(p[3], "wire", msb, lsb)
 
 
 def p_assign_block(p):
     """assign_block : ASSIGN assignment SEMI"""
-    p[0] = f"assign {p[2]};"
+    p[0] = f"// assign\n{p[2]};"
 
 def p_assignment(p):
     """assignment : IDENTIFIER EQ expression"""
@@ -262,15 +265,15 @@ def p_expression_identifier(p):
 
 def p_always_block(p):
     """always_block : ALWAYS AT sensitivity_list statement_block"""
-    p[0] = f"always @ {p[3]} {p[4]}"
+    p[0] = f'// Always block:\n{p[3]}{p[4]}'
 
 def p_sensitivity_list(p):
     """sensitivity_list : LPAREN sensitivity_items RPAREN"""
-    p[0] = p[2]
+    p[0] = f'\t// sensitivity list {p[2]}\n'
 
 def p_sensitivity_items(p):
     """sensitivity_items : IDENTIFIER
-    | sensitivity_items OR IDENTIFIER"""
+    | sensitivity_items OR_KW IDENTIFIER"""
     if len(p) == 2:
         p[0] = [p[1]]
     else:
@@ -278,7 +281,10 @@ def p_sensitivity_items(p):
 
 def p_statement_block(p):
     """statement_block : BEGIN statement_list END"""
-    p[0] = p[2]
+    p[0] = ''
+    print("statement_block:\t", p[2])
+    for stmt in p[2]:
+        p[0] += f"\t{stmt};\n"
 
 def p_statement_list(p):
     """statement_list : statement
@@ -289,7 +295,7 @@ def p_statement_list(p):
         p[0] = p[1] + [p[2]]
 
 def p_statement(p):
-    """statement : assignment
+    """statement : assignment SEMI
     | empty""" 
     p[0] = p[1]
 

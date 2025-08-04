@@ -52,11 +52,11 @@ Rule 46    expression -> IDENTIFIER
 Rule 47    always_block -> ALWAYS AT sensitivity_list statement_block
 Rule 48    sensitivity_list -> LPAREN sensitivity_items RPAREN
 Rule 49    sensitivity_items -> IDENTIFIER
-Rule 50    sensitivity_items -> sensitivity_items OR IDENTIFIER
+Rule 50    sensitivity_items -> sensitivity_items OR_KW IDENTIFIER
 Rule 51    statement_block -> BEGIN statement_list END
 Rule 52    statement_list -> statement
 Rule 53    statement_list -> statement_list statement
-Rule 54    statement -> assignment
+Rule 54    statement -> assignment SEMI
 Rule 55    statement -> empty
 
 Terminals, with rules where they appear
@@ -91,13 +91,14 @@ MODULE               : 1
 NEQ                  : 31
 NOT                  : 42
 NUMBER               : 7 7 45
-OR                   : 29 50
+OR                   : 29
+OR_KW                : 50
 OUTPUT               : 5 18
 PLUS                 : 24
 RPAREN               : 1 44 48
 RSHIFT               : 40
 RSQUARE              : 7
-SEMI                 : 1 17 18 21 22
+SEMI                 : 1 17 18 21 22 54
 TIMES                : 26
 WIRE                 : 21
 error                : 
@@ -722,7 +723,7 @@ state 53
 
     (48) sensitivity_list -> LPAREN . sensitivity_items RPAREN
     (49) sensitivity_items -> . IDENTIFIER
-    (50) sensitivity_items -> . sensitivity_items OR IDENTIFIER
+    (50) sensitivity_items -> . sensitivity_items OR_KW IDENTIFIER
 
     IDENTIFIER      shift and go to state 66
 
@@ -770,8 +771,6 @@ state 56
     LSHIFT          reduce using rule 46 (expression -> IDENTIFIER .)
     RSHIFT          reduce using rule 46 (expression -> IDENTIFIER .)
     SEMI            reduce using rule 46 (expression -> IDENTIFIER .)
-    END             reduce using rule 46 (expression -> IDENTIFIER .)
-    IDENTIFIER      reduce using rule 46 (expression -> IDENTIFIER .)
     RPAREN          reduce using rule 46 (expression -> IDENTIFIER .)
 
 
@@ -797,8 +796,6 @@ state 57
     (40) expression -> expression . RSHIFT expression
 
     SEMI            reduce using rule 23 (assignment -> IDENTIFIER EQ expression .)
-    END             reduce using rule 23 (assignment -> IDENTIFIER EQ expression .)
-    IDENTIFIER      reduce using rule 23 (assignment -> IDENTIFIER EQ expression .)
     PLUS            shift and go to state 67
     MINUS           shift and go to state 68
     TIMES           shift and go to state 69
@@ -984,8 +981,6 @@ state 62
     LSHIFT          reduce using rule 45 (expression -> NUMBER .)
     RSHIFT          reduce using rule 45 (expression -> NUMBER .)
     SEMI            reduce using rule 45 (expression -> NUMBER .)
-    END             reduce using rule 45 (expression -> NUMBER .)
-    IDENTIFIER      reduce using rule 45 (expression -> NUMBER .)
     RPAREN          reduce using rule 45 (expression -> NUMBER .)
 
 
@@ -1006,7 +1001,7 @@ state 64
     (51) statement_block -> BEGIN . statement_list END
     (52) statement_list -> . statement
     (53) statement_list -> . statement_list statement
-    (54) statement -> . assignment
+    (54) statement -> . assignment SEMI
     (55) statement -> . empty
     (23) assignment -> . IDENTIFIER EQ expression
     (9) empty -> .
@@ -1025,10 +1020,10 @@ state 64
 state 65
 
     (48) sensitivity_list -> LPAREN sensitivity_items . RPAREN
-    (50) sensitivity_items -> sensitivity_items . OR IDENTIFIER
+    (50) sensitivity_items -> sensitivity_items . OR_KW IDENTIFIER
 
     RPAREN          shift and go to state 92
-    OR              shift and go to state 93
+    OR_KW           shift and go to state 93
 
 
 state 66
@@ -1036,7 +1031,7 @@ state 66
     (49) sensitivity_items -> IDENTIFIER .
 
     RPAREN          reduce using rule 49 (sensitivity_items -> IDENTIFIER .)
-    OR              reduce using rule 49 (sensitivity_items -> IDENTIFIER .)
+    OR_KW           reduce using rule 49 (sensitivity_items -> IDENTIFIER .)
 
 
 state 67
@@ -1690,8 +1685,6 @@ state 84
     LSHIFT          reduce using rule 41 (expression -> MINUS expression .)
     RSHIFT          reduce using rule 41 (expression -> MINUS expression .)
     SEMI            reduce using rule 41 (expression -> MINUS expression .)
-    END             reduce using rule 41 (expression -> MINUS expression .)
-    IDENTIFIER      reduce using rule 41 (expression -> MINUS expression .)
     RPAREN          reduce using rule 41 (expression -> MINUS expression .)
 
   ! PLUS            [ shift and go to state 67 ]
@@ -1752,8 +1745,6 @@ state 85
     LSHIFT          reduce using rule 42 (expression -> NOT expression .)
     RSHIFT          reduce using rule 42 (expression -> NOT expression .)
     SEMI            reduce using rule 42 (expression -> NOT expression .)
-    END             reduce using rule 42 (expression -> NOT expression .)
-    IDENTIFIER      reduce using rule 42 (expression -> NOT expression .)
     RPAREN          reduce using rule 42 (expression -> NOT expression .)
 
   ! PLUS            [ shift and go to state 67 ]
@@ -1814,8 +1805,6 @@ state 86
     LSHIFT          reduce using rule 43 (expression -> BITNOT expression .)
     RSHIFT          reduce using rule 43 (expression -> BITNOT expression .)
     SEMI            reduce using rule 43 (expression -> BITNOT expression .)
-    END             reduce using rule 43 (expression -> BITNOT expression .)
-    IDENTIFIER      reduce using rule 43 (expression -> BITNOT expression .)
     RPAREN          reduce using rule 43 (expression -> BITNOT expression .)
 
   ! PLUS            [ shift and go to state 67 ]
@@ -1882,7 +1871,7 @@ state 88
 
     (51) statement_block -> BEGIN statement_list . END
     (53) statement_list -> statement_list . statement
-    (54) statement -> . assignment
+    (54) statement -> . assignment SEMI
     (55) statement -> . empty
     (23) assignment -> . IDENTIFIER EQ expression
     (9) empty -> .
@@ -1909,10 +1898,9 @@ state 89
 
 state 90
 
-    (54) statement -> assignment .
+    (54) statement -> assignment . SEMI
 
-    END             reduce using rule 54 (statement -> assignment .)
-    IDENTIFIER      reduce using rule 54 (statement -> assignment .)
+    SEMI            shift and go to state 114
 
 
 state 91
@@ -1932,9 +1920,9 @@ state 92
 
 state 93
 
-    (50) sensitivity_items -> sensitivity_items OR . IDENTIFIER
+    (50) sensitivity_items -> sensitivity_items OR_KW . IDENTIFIER
 
-    IDENTIFIER      shift and go to state 114
+    IDENTIFIER      shift and go to state 115
 
 
 state 94
@@ -1961,8 +1949,6 @@ state 94
     PLUS            reduce using rule 24 (expression -> expression PLUS expression .)
     MINUS           reduce using rule 24 (expression -> expression PLUS expression .)
     SEMI            reduce using rule 24 (expression -> expression PLUS expression .)
-    END             reduce using rule 24 (expression -> expression PLUS expression .)
-    IDENTIFIER      reduce using rule 24 (expression -> expression PLUS expression .)
     RPAREN          reduce using rule 24 (expression -> expression PLUS expression .)
     TIMES           shift and go to state 69
     DIVIDE          shift and go to state 70
@@ -2023,8 +2009,6 @@ state 95
     PLUS            reduce using rule 25 (expression -> expression MINUS expression .)
     MINUS           reduce using rule 25 (expression -> expression MINUS expression .)
     SEMI            reduce using rule 25 (expression -> expression MINUS expression .)
-    END             reduce using rule 25 (expression -> expression MINUS expression .)
-    IDENTIFIER      reduce using rule 25 (expression -> expression MINUS expression .)
     RPAREN          reduce using rule 25 (expression -> expression MINUS expression .)
     TIMES           shift and go to state 69
     DIVIDE          shift and go to state 70
@@ -2087,8 +2071,6 @@ state 96
     TIMES           reduce using rule 26 (expression -> expression TIMES expression .)
     DIVIDE          reduce using rule 26 (expression -> expression TIMES expression .)
     SEMI            reduce using rule 26 (expression -> expression TIMES expression .)
-    END             reduce using rule 26 (expression -> expression TIMES expression .)
-    IDENTIFIER      reduce using rule 26 (expression -> expression TIMES expression .)
     RPAREN          reduce using rule 26 (expression -> expression TIMES expression .)
     AND             shift and go to state 71
     OR              shift and go to state 72
@@ -2149,8 +2131,6 @@ state 97
     TIMES           reduce using rule 27 (expression -> expression DIVIDE expression .)
     DIVIDE          reduce using rule 27 (expression -> expression DIVIDE expression .)
     SEMI            reduce using rule 27 (expression -> expression DIVIDE expression .)
-    END             reduce using rule 27 (expression -> expression DIVIDE expression .)
-    IDENTIFIER      reduce using rule 27 (expression -> expression DIVIDE expression .)
     RPAREN          reduce using rule 27 (expression -> expression DIVIDE expression .)
     AND             shift and go to state 71
     OR              shift and go to state 72
@@ -2213,8 +2193,6 @@ state 98
     AND             reduce using rule 28 (expression -> expression AND expression .)
     OR              reduce using rule 28 (expression -> expression AND expression .)
     SEMI            reduce using rule 28 (expression -> expression AND expression .)
-    END             reduce using rule 28 (expression -> expression AND expression .)
-    IDENTIFIER      reduce using rule 28 (expression -> expression AND expression .)
     RPAREN          reduce using rule 28 (expression -> expression AND expression .)
     EQEQ            shift and go to state 73
     NEQ             shift and go to state 74
@@ -2275,8 +2253,6 @@ state 99
     AND             reduce using rule 29 (expression -> expression OR expression .)
     OR              reduce using rule 29 (expression -> expression OR expression .)
     SEMI            reduce using rule 29 (expression -> expression OR expression .)
-    END             reduce using rule 29 (expression -> expression OR expression .)
-    IDENTIFIER      reduce using rule 29 (expression -> expression OR expression .)
     RPAREN          reduce using rule 29 (expression -> expression OR expression .)
     EQEQ            shift and go to state 73
     NEQ             shift and go to state 74
@@ -2339,8 +2315,6 @@ state 100
     EQEQ            reduce using rule 30 (expression -> expression EQEQ expression .)
     NEQ             reduce using rule 30 (expression -> expression EQEQ expression .)
     SEMI            reduce using rule 30 (expression -> expression EQEQ expression .)
-    END             reduce using rule 30 (expression -> expression EQEQ expression .)
-    IDENTIFIER      reduce using rule 30 (expression -> expression EQEQ expression .)
     RPAREN          reduce using rule 30 (expression -> expression EQEQ expression .)
     LT              shift and go to state 75
     LE              shift and go to state 76
@@ -2401,8 +2375,6 @@ state 101
     EQEQ            reduce using rule 31 (expression -> expression NEQ expression .)
     NEQ             reduce using rule 31 (expression -> expression NEQ expression .)
     SEMI            reduce using rule 31 (expression -> expression NEQ expression .)
-    END             reduce using rule 31 (expression -> expression NEQ expression .)
-    IDENTIFIER      reduce using rule 31 (expression -> expression NEQ expression .)
     RPAREN          reduce using rule 31 (expression -> expression NEQ expression .)
     LT              shift and go to state 75
     LE              shift and go to state 76
@@ -2467,8 +2439,6 @@ state 102
     GT              reduce using rule 32 (expression -> expression LT expression .)
     GE              reduce using rule 32 (expression -> expression LT expression .)
     SEMI            reduce using rule 32 (expression -> expression LT expression .)
-    END             reduce using rule 32 (expression -> expression LT expression .)
-    IDENTIFIER      reduce using rule 32 (expression -> expression LT expression .)
     RPAREN          reduce using rule 32 (expression -> expression LT expression .)
     BITAND          shift and go to state 79
     BITOR           shift and go to state 80
@@ -2529,8 +2499,6 @@ state 103
     GT              reduce using rule 33 (expression -> expression LE expression .)
     GE              reduce using rule 33 (expression -> expression LE expression .)
     SEMI            reduce using rule 33 (expression -> expression LE expression .)
-    END             reduce using rule 33 (expression -> expression LE expression .)
-    IDENTIFIER      reduce using rule 33 (expression -> expression LE expression .)
     RPAREN          reduce using rule 33 (expression -> expression LE expression .)
     BITAND          shift and go to state 79
     BITOR           shift and go to state 80
@@ -2591,8 +2559,6 @@ state 104
     GT              reduce using rule 34 (expression -> expression GT expression .)
     GE              reduce using rule 34 (expression -> expression GT expression .)
     SEMI            reduce using rule 34 (expression -> expression GT expression .)
-    END             reduce using rule 34 (expression -> expression GT expression .)
-    IDENTIFIER      reduce using rule 34 (expression -> expression GT expression .)
     RPAREN          reduce using rule 34 (expression -> expression GT expression .)
     BITAND          shift and go to state 79
     BITOR           shift and go to state 80
@@ -2653,8 +2619,6 @@ state 105
     GT              reduce using rule 35 (expression -> expression GE expression .)
     GE              reduce using rule 35 (expression -> expression GE expression .)
     SEMI            reduce using rule 35 (expression -> expression GE expression .)
-    END             reduce using rule 35 (expression -> expression GE expression .)
-    IDENTIFIER      reduce using rule 35 (expression -> expression GE expression .)
     RPAREN          reduce using rule 35 (expression -> expression GE expression .)
     BITAND          shift and go to state 79
     BITOR           shift and go to state 80
@@ -2718,8 +2682,6 @@ state 106
     BITOR           reduce using rule 36 (expression -> expression BITAND expression .)
     BITXOR          reduce using rule 36 (expression -> expression BITAND expression .)
     SEMI            reduce using rule 36 (expression -> expression BITAND expression .)
-    END             reduce using rule 36 (expression -> expression BITAND expression .)
-    IDENTIFIER      reduce using rule 36 (expression -> expression BITAND expression .)
     RPAREN          reduce using rule 36 (expression -> expression BITAND expression .)
     LSHIFT          shift and go to state 82
     RSHIFT          shift and go to state 83
@@ -2780,8 +2742,6 @@ state 107
     BITOR           reduce using rule 37 (expression -> expression BITOR expression .)
     BITXOR          reduce using rule 37 (expression -> expression BITOR expression .)
     SEMI            reduce using rule 37 (expression -> expression BITOR expression .)
-    END             reduce using rule 37 (expression -> expression BITOR expression .)
-    IDENTIFIER      reduce using rule 37 (expression -> expression BITOR expression .)
     RPAREN          reduce using rule 37 (expression -> expression BITOR expression .)
     LSHIFT          shift and go to state 82
     RSHIFT          shift and go to state 83
@@ -2842,8 +2802,6 @@ state 108
     BITOR           reduce using rule 38 (expression -> expression BITXOR expression .)
     BITXOR          reduce using rule 38 (expression -> expression BITXOR expression .)
     SEMI            reduce using rule 38 (expression -> expression BITXOR expression .)
-    END             reduce using rule 38 (expression -> expression BITXOR expression .)
-    IDENTIFIER      reduce using rule 38 (expression -> expression BITXOR expression .)
     RPAREN          reduce using rule 38 (expression -> expression BITXOR expression .)
     LSHIFT          shift and go to state 82
     RSHIFT          shift and go to state 83
@@ -2906,8 +2864,6 @@ state 109
     LSHIFT          reduce using rule 39 (expression -> expression LSHIFT expression .)
     RSHIFT          reduce using rule 39 (expression -> expression LSHIFT expression .)
     SEMI            reduce using rule 39 (expression -> expression LSHIFT expression .)
-    END             reduce using rule 39 (expression -> expression LSHIFT expression .)
-    IDENTIFIER      reduce using rule 39 (expression -> expression LSHIFT expression .)
     RPAREN          reduce using rule 39 (expression -> expression LSHIFT expression .)
 
   ! PLUS            [ shift and go to state 67 ]
@@ -2968,8 +2924,6 @@ state 110
     LSHIFT          reduce using rule 40 (expression -> expression RSHIFT expression .)
     RSHIFT          reduce using rule 40 (expression -> expression RSHIFT expression .)
     SEMI            reduce using rule 40 (expression -> expression RSHIFT expression .)
-    END             reduce using rule 40 (expression -> expression RSHIFT expression .)
-    IDENTIFIER      reduce using rule 40 (expression -> expression RSHIFT expression .)
     RPAREN          reduce using rule 40 (expression -> expression RSHIFT expression .)
 
   ! PLUS            [ shift and go to state 67 ]
@@ -3013,8 +2967,6 @@ state 111
     LSHIFT          reduce using rule 44 (expression -> LPAREN expression RPAREN .)
     RSHIFT          reduce using rule 44 (expression -> LPAREN expression RPAREN .)
     SEMI            reduce using rule 44 (expression -> LPAREN expression RPAREN .)
-    END             reduce using rule 44 (expression -> LPAREN expression RPAREN .)
-    IDENTIFIER      reduce using rule 44 (expression -> LPAREN expression RPAREN .)
     RPAREN          reduce using rule 44 (expression -> LPAREN expression RPAREN .)
 
 
@@ -3040,10 +2992,18 @@ state 113
 
 state 114
 
-    (50) sensitivity_items -> sensitivity_items OR IDENTIFIER .
+    (54) statement -> assignment SEMI .
 
-    RPAREN          reduce using rule 50 (sensitivity_items -> sensitivity_items OR IDENTIFIER .)
-    OR              reduce using rule 50 (sensitivity_items -> sensitivity_items OR IDENTIFIER .)
+    END             reduce using rule 54 (statement -> assignment SEMI .)
+    IDENTIFIER      reduce using rule 54 (statement -> assignment SEMI .)
+
+
+state 115
+
+    (50) sensitivity_items -> sensitivity_items OR_KW IDENTIFIER .
+
+    RPAREN          reduce using rule 50 (sensitivity_items -> sensitivity_items OR_KW IDENTIFIER .)
+    OR_KW           reduce using rule 50 (sensitivity_items -> sensitivity_items OR_KW IDENTIFIER .)
 
 WARNING: 
 WARNING: Conflicts:

@@ -1,11 +1,12 @@
-module and_gate (
+module and_gate_always (
     input  a,
     input  b,
     output c
 );
 
-    // always @(a or b) begin
-    //     c = a & b;
-    // end
+    always @(a or b) begin
+        c = a & b;
+        c = b;
+    end
 
 endmodule

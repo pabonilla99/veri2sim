@@ -9,8 +9,8 @@ reserved = {
     "wire": "WIRE",
     # 'reg': 'REG',
     'always': 'ALWAYS',
-    # 'begin': 'BEGIN',
-    # 'end': 'END',
+    'begin': 'BEGIN',
+    'end': 'END',
     # 'if': 'IF',
     # 'else': 'ELSE',
     # 'case': 'CASE',
@@ -28,6 +28,7 @@ reserved = {
     # 'endfunction': 'ENDFUNCTION',
     # 'task': 'TASK',
     # 'endtask': 'ENDTASK'
+    'or': 'OR_KW',
 }
 
 # Tokens list
@@ -63,9 +64,7 @@ tokens = [
     "COLON",
     "RSQUARE",
     "LSQUARE",
-    "AT",         
-    "BEGIN",      
-    "END",        
+    "AT",          
 ] + list(reserved.values())
 
 # Regular expression rules for simple tokens
@@ -99,8 +98,6 @@ t_COLON = r":"
 t_RSQUARE = r"\]"
 t_LSQUARE = r"\["
 t_AT = r"@"
-t_BEGIN = r"begin"
-t_END = r"end"
 
 
 # Rule to ignore Verilog comments
