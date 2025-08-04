@@ -174,7 +174,7 @@ def p_wire_declaration(p):
 
 def p_assign_block(p):
     """assign_block : ASSIGN assignment SEMI"""
-    p[0] = f"// assign\n\t{p[2]};"
+    p[0] = f"// assign\n{p[2]};"
 
 def p_assignment(p):
     """assignment : IDENTIFIER EQ expression"""
@@ -265,7 +265,7 @@ def p_expression_identifier(p):
 
 def p_always_block(p):
     """always_block : ALWAYS AT sensitivity_list statement_block"""
-    p[0] = f'// --- always ---\n\t// {p[3]}\n{p[4]}\t// --------------'
+    p[0] = f'// --- always ---\n// {p[3]}\n{p[4]}// --------------'
 
 def p_sensitivity_list(p):
     """sensitivity_list : LPAREN sensitivity_items RPAREN"""
@@ -284,7 +284,7 @@ def p_statement_block(p):
     p[0] = ''
     print("statement_block:\t", p[2])
     for stmt in p[2]:
-        p[0] += f"\t{stmt};\n"
+        p[0] += f"{stmt};\n"
 
 def p_statement_list(p):
     """statement_list : statement
@@ -296,8 +296,31 @@ def p_statement_list(p):
 
 def p_statement(p):
     """statement : assignment SEMI
+    | if_block
     | empty""" 
     p[0] = p[1]
+
+def p_if_block(p):
+    """if_block : IF LPAREN expression RPAREN statement else_block_opt
+                | IF LPAREN expression RPAREN statement_block else_block_opt"""
+    if isinstance(p[5], list):
+        body = "{\n" + "".join(f"{stmt};\n" for stmt in p[5]) + "}"
+    else:
+        body = f"{p[5]}"
+    p[0] = f"if ({p[3]}) {body}\n{p[6]}"
+
+def p_else_block_opt(p):
+    """else_block_opt   : ELSE statement
+                        | ELSE statement_block
+                        | empty"""
+    if len(p) == 3:
+        if isinstance(p[2], list):
+            body = "{\n" + "".join(f"{stmt};\n" for stmt in p[2]) + "}"
+        else:
+            body = f"{p[2]}"
+        p[0] = f"else {body}"
+    else:
+        p[0] = ""
 
 
 # Error handling
