@@ -275,8 +275,9 @@ def p_sensitivity_list(p):
     p[0] = p[2]
 
 def p_sensitivity_items(p):
-    """sensitivity_items : IDENTIFIER
-    | sensitivity_items OR_KW IDENTIFIER"""
+    """sensitivity_items    : IDENTIFIER
+                            | sensitivity_items OR_KW IDENTIFIER
+                            | sensitivity_items COMMA IDENTIFIER"""
     if len(p) == 2:
         p[0] = [p[1]]
     else:
