@@ -271,26 +271,34 @@ def p_expression_identifier(p):
 def p_always_block(p):
     """always_block : ALWAYS AT sensitivity_list statement_block"""
     edged_vars = []
+    # print(f"always_block: {p[3]}")
     for identifier in p[3]:
-        if identifier in symbol_table.symbols:
+        try:
+            # print(f"always_block: id={identifier}")
             if symbol_table.symbols[identifier].edge != None:
-                edged_vars.append(f"{symbol_table.symbols[identifier].edge} {identifier}")
-
-    if len(edged_vars) == 0:
-        p[0] = f'// --- always ---\n// @({p[3]})\n'
+                edged_vars.append({'name': identifier, 'edge': symbol_table.symbols[identifier].edge})
+        except KeyError:
+            print(f"Warning: Identifier {identifier} not found in symbol table.")
+    p[0] = f'// --- always ---\n// @('
+    if len(edged_vars) == 0:            # combinational always block
+        p[0] += ",".join(p[3]) + ')\n'
         for stmt in p[4]:
             p[0] += f"{stmt};\n"
-        p[0] += '// --------------'
-    else:
-        p[0] = f'// --- always ---\n// @({", ".join(edged_vars)})\n'
-        p[0] += f"if ({'|| '.join(edged_vars)}) {{\n"
+    else:                               # sequential always block       
+        for var in edged_vars:
+            p[0] += f"{var['edge']} {var['name']} ,"
+        p[0] = p[0][:-2] + ')\nif ('
+        for var in edged_vars:
+            p[0] += f"{var['name']}.getInpState() == "
+            p[0] += f"1 || " if var['edge'] == "posedge" else f"0 || "
+        p[0] = p[0][:-4] + ") {\n"    
         for stmt in p[4]:
             p[0] += f"{stmt};\n"
-        p[0] += '}}\n// --------------'
+    p[0] += '}\n// --------------'
 
 def p_sensitivity_list(p):
     """sensitivity_list : LPAREN sensitivity_items RPAREN"""
-    p[0] = [p[2]] # "".join(f"{id}, " for id in p[2])[:-2]
+    p[0] = p[2] # "".join(f"{id}, " for id in p[2])[:-2]
 
 def p_sensitivity_items(p):
     """sensitivity_items    : IDENTIFIER
@@ -321,9 +329,22 @@ def p_statement_list(p):
 
 def p_statement(p):
     """statement    : assignment SEMI
+                    | reg_assignment SEMI
                     | if_block
                     | empty""" 
     p[0] = p[1]
+
+def p_reg_assignment(p):
+    """reg_assignment : IDENTIFIER LE expression"""
+    print(f"reg_assignment: {p[1]} = {p[3]}")
+    if p[1] in symbol_table.symbols:
+        if symbol_table.symbols[p[1]].type == "output":  # output <= statement
+            if symbol_table.symbols[p[1]].msb == symbol_table.symbols[p[1]].lsb:
+                p[0] = f"{p[1]}Pin.setOutState({p[3]})"
+            else:
+                p[0] = f"{p[1]}Port.setOutState({p[3]})"
+        else:  # wire <= statement
+            p[0] = f"{p[1]} = {p[3]}"
 
 def p_if_block(p):
     """if_block : IF LPAREN expression RPAREN statement else_block_opt
