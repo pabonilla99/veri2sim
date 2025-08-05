@@ -176,27 +176,27 @@ class Component():
                         f.write(f'\nuint {symbol} = 0;')
 
             # -------------------- setup function --------------------
-            f.write(f'\n\nvoid setup()\n{{\n\tprint("{self.name} setup()");\n}}')
+            f.write(f'\n\nvoid setup()\n{{\nprint("{self.name} setup()");\n}}')
             
             # -------------------- reset function --------------------
-            f.write(f'\n\nvoid reset()\n{{\n\tprint("{self.name} reset()");\n\n')
+            f.write(f'\n\nvoid reset()\n{{\nprint("{self.name} reset()");\n\n')
             for symbol in self.symbols:
                 msb = self.symbols[symbol].msb 
                 lsb = self.symbols[symbol].lsb
                 if self.symbols[symbol].type == 'input':
                     if msb == lsb: 
-                        f.write(f'\t{symbol}Pin.setPinMode(1); // Input\n')
-                        f.write(f'\t{symbol}Pin.changeCallBack(element, true);\n')
+                        f.write(f'{symbol}Pin.setPinMode(1); // Input\n')
+                        f.write(f'{symbol}Pin.changeCallBack(element, true);\n')
                     else:
-                        f.write(f'\t{symbol}Port.setPinMode(1); // Input\n')
-                        f.write(f'\t{symbol}Port.changeCallBack(element, true);\n')
+                        f.write(f'{symbol}Port.setPinMode(1); // Input\n')
+                        f.write(f'{symbol}Port.changeCallBack(element, true);\n')
                 elif self.symbols[symbol].type == 'output':
                     if msb == lsb: 
-                        f.write(f'\t{symbol}Pin.setPinMode(3); // Output\n')
-                        f.write(f'\t{symbol}Pin.setOutState(false);\n')
+                        f.write(f'{symbol}Pin.setPinMode(3); // Output\n')
+                        f.write(f'{symbol}Pin.setOutState(false);\n')
                     else:
-                        f.write(f'\t{symbol}Port.setPinMode(3); // Output\n')
-                        f.write(f'\t{symbol}Port.setOutState(0);\n')
+                        f.write(f'{symbol}Port.setPinMode(3); // Output\n')
+                        f.write(f'{symbol}Port.setOutState(0);\n')
             f.write('}\n')
 
             # -------------------- voltChanged function --------------------
