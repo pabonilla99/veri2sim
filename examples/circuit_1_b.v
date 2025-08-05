@@ -1,4 +1,4 @@
-module circuit_1B (
+module circuit_1_b (
     input X,
     input Y,
     input Z,

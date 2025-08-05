@@ -1,4 +1,4 @@
-module and_gate_always_B (
+module and_gate_always_b (
     input  a,
     input  b,
     output c

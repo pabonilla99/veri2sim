@@ -1,4 +1,4 @@
-module mux_2_1_B (
+module mux_2_1_b (
     input sel,
     input  a,
     input  b,
