@@ -83,15 +83,21 @@ def p_port_list(p):
 
 
 def p_port(p):
-    """port     : INPUT range_opt IDENTIFIER
+    """port     : range_opt IDENTIFIER
+                | INPUT range_opt IDENTIFIER
                 | OUTPUT range_opt IDENTIFIER
-                | REG range_opt IDENTIFIER
-                | range_opt IDENTIFIER"""
-    if len(p) == 4:  # INPUT or OUTPUT defined
+                | INPUT WIRE range_opt IDENTIFIER
+                | OUTPUT REG range_opt IDENTIFIER"""
+    # print("port:\t", p[1:])
+    if len(p) == 5:  # WIRE or REG defined
+        port_type = p[1]
+        range_opt = p[3]
+        identifier = p[4]
+    elif len(p) == 4:  # INPUT or OUTPUT defined
         port_type = p[1]
         range_opt = p[2]
         identifier = p[3]
-    else:  # No INPUT or OUTPUT defined
+    else:           # No INPUT or OUTPUT defined
         port_type = "unspecified"
         range_opt = p[1]
         identifier = p[2]
