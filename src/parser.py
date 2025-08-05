@@ -15,14 +15,15 @@ class VerilogModule:
 
 # Class for a symbol in the symbol table
 class Symbol:
-    def __init__(self, name, sym_type, msb=None, lsb=None):
+    def __init__(self, name, sym_type, msb=None, lsb=None, edge=None):
         self.name = name
         self.type = sym_type
         self.msb = msb
         self.lsb = lsb
+        self.edge = edge
 
     def __str__(self):
-        return f"Symbol(name={self.name}, type={self.type}, msb={self.msb}, lsb={self.lsb})"
+        return f"Symbol(name={self.name}, type={self.type}, msb={self.msb}, lsb={self.lsb}, edge={self.edge})"
 
 
 # Class for the symbol table
@@ -30,13 +31,13 @@ class SymbolTable:
     def __init__(self):
         self.symbols = {}
 
-    def add_symbol(self, name, sym_type, msb=None, lsb=None):
+    def add_symbol(self, name, sym_type, msb=None, lsb=None, edge=None):
         if name not in self.symbols:
-            self.symbols[name] = Symbol(name, sym_type, msb, lsb)
+            self.symbols[name] = Symbol(name, sym_type, msb, lsb, edge)
         else:
             print(f"Warning: Symbol {name} already exists in the symbol table.")
 
-    def modify_symbol(self, name, sym_type=None, msb=None, lsb=None):
+    def modify_symbol(self, name, sym_type=None, msb=None, lsb=None, edge=None):
         if name in self.symbols:
             if sym_type is not None:
                 self.symbols[name].type = sym_type
@@ -44,6 +45,8 @@ class SymbolTable:
                 self.symbols[name].msb = msb
             if lsb is not None:
                 self.symbols[name].lsb = lsb
+            if edge is not None:
+                self.symbols[name].edge = edge
         else:
             print(f"Error: Symbol {name} does not exist in the symbol table.")
 
@@ -82,6 +85,7 @@ def p_port_list(p):
 def p_port(p):
     """port     : INPUT range_opt IDENTIFIER
                 | OUTPUT range_opt IDENTIFIER
+                | REG range_opt IDENTIFIER
                 | range_opt IDENTIFIER"""
     if len(p) == 4:  # INPUT or OUTPUT defined
         port_type = p[1]
@@ -105,8 +109,8 @@ def p_port(p):
 
 
 def p_range_opt(p):
-    """range_opt : LSQUARE NUMBER COLON NUMBER RSQUARE
-    | empty"""
+    """range_opt    : LSQUARE NUMBER COLON NUMBER RSQUARE
+                    | empty"""
     if len(p) == 6:
         p[0] = (int(p[2]), int(p[4]))
     else:
@@ -121,7 +125,7 @@ def p_empty(p):
 
 def p_module_items(p):
     """module_items : module_item
-    | module_items module_item"""
+                    | module_items module_item"""
     if len(p) == 2:
         p[0] = {"statements": []}
         # if "// wire " not in p[1]:
@@ -133,17 +137,18 @@ def p_module_items(p):
 
 
 def p_module_item(p):
-    """module_item : wire_declaration
-    | identifier_definition
-    | assign_block
-    | always_block
-    | empty"""
+    """module_item  : wire_declaration
+                    | identifier_definition
+                    | assign_block
+                    | always_block
+                    | empty"""
     p[0] = p[1]
 
 
 def p_identifier_definition(p):
-    """identifier_definition : INPUT identifier_list SEMI
-    | OUTPUT identifier_list SEMI"""
+    """identifier_definition    : INPUT identifier_list SEMI
+                                | OUTPUT identifier_list SEMI
+                                | REG identifier_list SEMI"""
     port_type = p[1]
     identifiers = p[2]
     for identifier in identifiers:
@@ -151,8 +156,8 @@ def p_identifier_definition(p):
 
 
 def p_identifier_list(p):
-    """identifier_list : IDENTIFIER
-    | identifier_list COMMA IDENTIFIER"""
+    """identifier_list  : IDENTIFIER
+                        | identifier_list COMMA IDENTIFIER"""
     if len(p) == 2:
         p[0] = [p[1]]
     else:
@@ -190,23 +195,23 @@ def p_assignment(p):
 
 
 def p_expression_binop(p):
-    """expression : expression PLUS expression
-    | expression MINUS expression
-    | expression TIMES expression
-    | expression DIVIDE expression
-    | expression AND expression
-    | expression OR expression
-    | expression EQEQ expression
-    | expression NEQ expression
-    | expression LT expression
-    | expression LE expression
-    | expression GT expression
-    | expression GE expression
-    | expression BITAND expression
-    | expression BITOR expression
-    | expression BITXOR expression
-    | expression LSHIFT expression
-    | expression RSHIFT expression"""
+    """expression   : expression PLUS expression
+                    | expression MINUS expression
+                    | expression TIMES expression
+                    | expression DIVIDE expression
+                    | expression AND expression
+                    | expression OR expression
+                    | expression EQEQ expression
+                    | expression NEQ expression
+                    | expression LT expression
+                    | expression LE expression
+                    | expression GT expression
+                    | expression GE expression
+                    | expression BITAND expression
+                    | expression BITOR expression
+                    | expression BITXOR expression
+                    | expression LSHIFT expression
+                    | expression RSHIFT expression"""
     p[0] = f"{p[1]} {p[2]} {p[3]}"
 
 
@@ -219,14 +224,14 @@ precedence = (
     ("left", "LT", "LE", "GT", "GE"),
     ("left", "BITAND", "BITOR", "BITXOR"),
     ("left", "LSHIFT", "RSHIFT"),
-    ("right", "NOT", "BITNOT"),
+    ("right", "NOT", "BITNOT", "POSEDGE", "NEGEDGE" ),
 )
 
 
 def p_expression_unop(p):
-    """expression : MINUS expression %prec NOT
-    | NOT expression
-    | BITNOT expression"""
+    """expression   : MINUS expression %prec NOT
+                    | NOT expression
+                    | BITNOT expression"""
     exp = p[2].replace("Pin.getInpState()", "")
     if exp in symbol_table.symbols:
         if (
@@ -265,21 +270,39 @@ def p_expression_identifier(p):
 
 def p_always_block(p):
     """always_block : ALWAYS AT sensitivity_list statement_block"""
-    p[0] = f'// --- always ---\n// @({p[3]})\n'
-    for stmt in p[4]:
-        p[0] += f"{stmt};\n"
-    p[0] += '// --------------'
+    edged_vars = []
+    for identifier in p[3]:
+        if identifier in symbol_table.symbols:
+            if symbol_table.symbols[identifier].edge != None:
+                edged_vars.append(f"{symbol_table.symbols[identifier].edge} {identifier}")
+
+    if len(edged_vars) == 0:
+        p[0] = f'// --- always ---\n// @({p[3]})\n'
+        for stmt in p[4]:
+            p[0] += f"{stmt};\n"
+        p[0] += '// --------------'
+    else:
+        p[0] = f'// --- always ---\n// @({", ".join(edged_vars)})\n'
+        p[0] += f"if ({'|| '.join(edged_vars)}) {{\n"
+        for stmt in p[4]:
+            p[0] += f"{stmt};\n"
+        p[0] += '}}\n// --------------'
 
 def p_sensitivity_list(p):
     """sensitivity_list : LPAREN sensitivity_items RPAREN"""
-    p[0] = "".join(f"{id}, " for id in p[2])[:-2]
+    p[0] = [p[2]] # "".join(f"{id}, " for id in p[2])[:-2]
 
 def p_sensitivity_items(p):
     """sensitivity_items    : IDENTIFIER
+                            | NEGEDGE IDENTIFIER
+                            | POSEDGE IDENTIFIER
                             | sensitivity_items OR_KW IDENTIFIER
                             | sensitivity_items COMMA IDENTIFIER"""
     if len(p) == 2:
         p[0] = [p[1]]
+    elif len(p) == 3:    
+        symbol_table.modify_symbol(p[2], sym_type=None, msb=None, lsb=None, edge=p[1])
+        p[0] = [p[2]]
     else:
         p[0] = p[1] + [p[3]]
 
@@ -289,17 +312,17 @@ def p_statement_block(p):
     p[0] = p[2]
 
 def p_statement_list(p):
-    """statement_list : statement
-    | statement_list statement"""
+    """statement_list   : statement
+                        | statement_list statement"""
     if len(p) == 2:
         p[0] = [p[1]]
     else:
         p[0] = p[1] + [p[2]]
 
 def p_statement(p):
-    """statement : assignment SEMI
-    | if_block
-    | empty""" 
+    """statement    : assignment SEMI
+                    | if_block
+                    | empty""" 
     p[0] = p[1]
 
 def p_if_block(p):
