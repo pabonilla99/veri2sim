@@ -42,8 +42,8 @@ tokens = [
     "DIVIDE",
     "LPAREN",
     "RPAREN",
-    # 'LBRACE',
-    # 'RBRACE',
+    'LBRACE',
+    'RBRACE',
     "SEMI",
     "COMMA",
     "EQ",
@@ -75,8 +75,8 @@ t_TIMES = r"\*"
 t_DIVIDE = r"/"
 t_LPAREN = r"\("
 t_RPAREN = r"\)"
-# t_LBRACE = r'\{'
-# t_RBRACE = r'\}'
+t_LBRACE = r'\{'
+t_RBRACE = r'\}'
 t_SEMI = r";"
 t_COMMA = r","
 t_EQ = r"="
@@ -110,23 +110,23 @@ def t_COMMENT(t):
 # Rule for numbers
 def t_NUMBER(t):
     r"(\d+)'[bodhBODH][0-9a-fA-F_xXzZ]+|\d+"
-    value = t.value
-    if "'" in value:
-        width, base_and_digits = value.split("'")
-        base = base_and_digits[0].lower()
-        digits = base_and_digits[1:]
-        if base == 'b':
-            t.value = int(digits.replace('_', ''), 2)
-        elif base == 'o':
-            t.value = int(digits.replace('_', ''), 8)
-        elif base == 'd':
-            t.value = int(digits.replace('_', ''), 10)
-        elif base == 'h':
-            t.value = int(digits.replace('_', ''), 16)
-        else:
-            t.value = int(digits.replace('_', ''), 10)
-    else:
-        t.value = int(value)
+    # value = t.value
+    # if "'" in value:
+    #     width, base_and_digits = value.split("'")
+    #     base = base_and_digits[0].lower()
+    #     digits = base_and_digits[1:]
+    #     if base == 'b':
+    #         t.value = int(digits.replace('_', ''), 2)
+    #     elif base == 'o':
+    #         t.value = int(digits.replace('_', ''), 8)
+    #     elif base == 'd':
+    #         t.value = int(digits.replace('_', ''), 10)
+    #     elif base == 'h':
+    #         t.value = int(digits.replace('_', ''), 16)
+    #     else:
+    #         t.value = int(digits.replace('_', ''), 10)
+    # else:
+    #     t.value = int(value)
     return t
 
 

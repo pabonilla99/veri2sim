@@ -121,7 +121,7 @@ def p_range_opt(p):
     """range_opt    : LSQUARE NUMBER COLON NUMBER RSQUARE
                     | empty"""
     if len(p) == 6:
-        p[0] = (int(p[2]), int(p[4]))
+        p[0] = [convert_to_number(p[2]), convert_to_number(p[4])]
     else:
         p[0] = None
 
@@ -149,8 +149,7 @@ def p_module_item(p):
     """module_item  : wire_declaration
                     | identifier_definition
                     | assign_block
-                    | always_block
-                    | empty"""
+                    | always_block"""
     p[0] = p[1]
 
 
@@ -262,7 +261,7 @@ def p_expression_group(p):
 
 def p_expression_number(p):
     """expression : NUMBER"""
-    p[0] = p[1]
+    p[0] = convert_to_number(p[1])
 
 
 def p_expression_identifier(p):
@@ -278,7 +277,7 @@ def p_expression_identifier(p):
 
 
 def p_always_block(p):
-    """always_block : ALWAYS AT sensitivity_list statement_block"""
+    """always_block : ALWAYS AT sensitivity_list statement"""
     edged_vars = []
     # print(f"always_block: {p[3]}")
     for identifier in p[3]:
@@ -346,7 +345,7 @@ def p_statement(p):
                     | reg_assignment SEMI
                     | if_block
                     | case_block
-                    | empty""" 
+                    | statement_block"""
     p[0] = p[1]
 
 def p_reg_assignment(p):
@@ -362,8 +361,7 @@ def p_reg_assignment(p):
             p[0] = f"{p[1]} = {p[3]}"
 
 def p_if_block(p):
-    """if_block : IF LPAREN expression RPAREN statement else_block_opt
-                | IF LPAREN expression RPAREN statement_block else_block_opt"""
+    """if_block : IF LPAREN expression RPAREN statement else_block_opt"""
     if isinstance(p[5], list):
         body = "{\n" + "".join(f"{stmt};\n" for stmt in p[5]) + "}"
     else:
@@ -372,7 +370,6 @@ def p_if_block(p):
 
 def p_else_block_opt(p):
     """else_block_opt   : ELSE statement
-                        | ELSE statement_block
                         | empty"""
     if len(p) == 3:
         if isinstance(p[2], list):
@@ -397,10 +394,8 @@ def p_case_item_list(p):
         p[0] = p[1] + [p[2]]
 
 def p_case_item(p):
-    """case_item : case_label COLON statement
-                 | DEFAULT COLON statement
-                 | case_label COLON statement_block
-                 | DEFAULT COLON statement_block"""
+    """case_item : num_or_id COLON statement
+                 | DEFAULT COLON statement"""
     statements = ';\n\t'.join(p[3]) if isinstance(p[3], list) else p[3]
     if p[1] == 'default':
         p[0] = f"default:\n\t{statements}"   
@@ -408,14 +403,65 @@ def p_case_item(p):
         p[0] = f"case {p[1]}:\n\t{statements}" 
     p[0] += ";\n\tbreak;\n"
 
-def p_case_label(p):
-    """case_label : NUMBER
-                  | IDENTIFIER"""
+def p_num_or_id(p):
+    """num_or_id    : NUMBER
+                    | IDENTIFIER"""
     p[0] = p[1]
+
+def p_expression_concat(p):
+    """expression : LBRACE concat_list RBRACE"""
+    bit_index = 0
+    p[0] = "\n"
+    print(f"expression_concat: {p[2]} : {type(p[2])}")
+    for identifier in list(reversed(p[2])):
+        if identifier in symbol_table.symbols:  # identifier in symbol table
+            n_bits = symbol_table.symbols[identifier].msb - symbol_table.symbols[identifier].lsb + 1
+            mask = '0b' + '0'*(64 - n_bits) + '1'*n_bits
+            p[0] += f"\t({identifier}Pin.getInpState() & {hex(int(mask, 2))}) "
+            p[0] += f"<< {bit_index} |\n" if bit_index != 0 else f"|\n"
+        elif "'" in identifier:                 # number with base and bits
+            n_bits, _ = identifier.split("'")    
+            mask = '0b' + '0'*(64 - n_bits) + '1'*n_bits
+            p[0] += f"\t({convert_to_number(identifier)} & {hex(int(mask, 2))}) "
+            p[0] += f"<< {bit_index} |\n" if bit_index != 0 else f"|\n"
+        else:                                   # identifier not in symbol table
+            print(f"Warning: Identifier {identifier} not found in symbol table.")
+        bit_index += n_bits
+    p[0] = p[0][:-3] + "\n"
+
+def p_concat_list(p):
+    """concat_list  : num_or_id
+                    | concat_list COMMA num_or_id"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
+
 
 # Error handling
 def p_error(p):
     print("Syntax error in input!")
+
+
+def convert_to_number(value):
+    if "'" in value:
+        width, base_and_digits = value.split("'")
+        base = base_and_digits[0].lower()
+        digits = base_and_digits[1:]
+        if base == 'b':
+            num = int(digits.replace('_', ''), 2)
+        elif base == 'o':
+            num = int(digits.replace('_', ''), 8)
+        elif base == 'd':
+            num = int(digits.replace('_', ''), 10)
+        elif base == 'h':
+            num = int(digits.replace('_', ''), 16)
+        else:
+            num = int(digits.replace('_', ''), 10)
+    else:
+        num = int(value)
+    
+    return num
 
 
 # Build the parser
