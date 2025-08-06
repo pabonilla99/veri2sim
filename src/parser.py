@@ -282,6 +282,8 @@ def p_always_block(p):
     edged_vars = []
     # print(f"always_block: {p[3]}")
     for identifier in p[3]:
+        if identifier == "*":
+            break
         try:
             # print(f"always_block: id={identifier}")
             if symbol_table.symbols[identifier].edge != None:
@@ -307,11 +309,13 @@ def p_always_block(p):
     p[0] += '// --------------'
 
 def p_sensitivity_list(p):
-    """sensitivity_list : LPAREN sensitivity_items RPAREN"""
+    """sensitivity_list : LPAREN sensitivity_items RPAREN
+                        | LPAREN TIMES RPAREN"""
     p[0] = p[2] # "".join(f"{id}, " for id in p[2])[:-2]
 
 def p_sensitivity_items(p):
-    """sensitivity_items    : IDENTIFIER
+    """sensitivity_items    : TIMES
+                            | IDENTIFIER
                             | NEGEDGE IDENTIFIER
                             | POSEDGE IDENTIFIER
                             | sensitivity_items OR_KW IDENTIFIER
