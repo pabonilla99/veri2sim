@@ -77,4 +77,5 @@ if args.command == "compile":
     component.create_package()
     component.create_mcu()
     component.create_script()
+    component.format_script()
     print("\nCompilation completed.")

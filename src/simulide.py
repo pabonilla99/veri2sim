@@ -204,3 +204,24 @@ class Component():
             for statement in self.statements:
                 f.write(f'{statement}\n')     
             f.write('}\n')
+
+    def format_script(self):
+        with open(f"./output/{self.name}/{self.name}.as", "r+") as f:
+            out = f.read()
+            temp = ''
+            ind_count = 0
+            for c in out:
+                if c == '\n':
+                    temp += '\n' + '\t'*ind_count
+                elif c == '{':
+                    ind_count += 1
+                    temp += c
+                elif c == '}':
+                    ind_count -= 1
+                    temp += c
+                else:
+                    temp += c
+
+            temp = temp.replace('\t}', '}')
+            f.seek(0)               # move to the beginning of the file
+            f.write(temp + '\n')    # write the formatted content
