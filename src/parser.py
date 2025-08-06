@@ -10,7 +10,10 @@ class VerilogModule:
         self.symbols = symbol_table.symbols
 
     def __str__(self):
-        return f"Module: {self.name}\nStatements: {self.statements}\nSymbols: {self.symbols}"
+        out = f"Module:\n\t{self.name}\n\n"
+        out += "Statements:\n\t" + ''.join(self.statements).replace('\n', '\n\t') + "\n\n"
+        out += "Symbols:\n\t" + '\n\t'.join([f'{value}' for _, value in self.symbols.items()])
+        return out
 
 
 # Class for a symbol in the symbol table
@@ -67,7 +70,7 @@ def p_module(p):
     # Add the module to the symbol table
     symbol_table.add_symbol(p[2], "module")
     # print(symbol_table)
-    print("module:\t", p[2])
+    # print("module:\t", p[2])
 
 
 def p_port_list(p):
@@ -75,10 +78,10 @@ def p_port_list(p):
                     | port_list COMMA port"""
     if len(p) == 2:
         p[0] = p[1]
-        print("port_list:\t", p[1]) 
+        # print("port_list:\t", p[1]) 
     else:
         p[0] = f"{p[1], p[3]}"
-        print("port_list:\t", f"{p[1], p[3]}") 
+        # print("port_list:\t", f"{p[1], p[3]}") 
     
 
 
@@ -111,7 +114,7 @@ def p_port(p):
 
     # Add the port to the symbol table
     symbol_table.add_symbol(identifier, port_type, msb, lsb)
-    print("port:\t", identifier) 
+    # print("port:\t", identifier) 
 
 
 def p_range_opt(p):
@@ -189,7 +192,7 @@ def p_assign_block(p):
 
 def p_assignment(p):
     """assignment : IDENTIFIER EQ expression"""
-    print(f"assignment: {p[1]} = {p[3]}")
+    # print(f"assignment: {p[1]} = {p[3]}")
     if p[1] in symbol_table.symbols:
         if symbol_table.symbols[p[1]].type == "output":  # output <= statement
             if symbol_table.symbols[p[1]].msb == symbol_table.symbols[p[1]].lsb:
@@ -323,7 +326,7 @@ def p_sensitivity_items(p):
 
 def p_statement_block(p):
     """statement_block : BEGIN statement_list END"""
-    print("statement_block:\t", p[2])
+    # print("statement_block:\t", p[2])
     p[0] = p[2]
 
 def p_statement_list(p):
@@ -394,10 +397,12 @@ def p_case_item(p):
                  | DEFAULT COLON statement
                  | case_label COLON statement_block
                  | DEFAULT COLON statement_block"""
+    statements = ';\n\t'.join(p[3]) if isinstance(p[3], list) else p[3]
     if p[1] == 'default':
-        p[0] = f"default: {p[3]};\n"
+        p[0] = f"default:\n\t{statements}"   
     else:
-        p[0] = f"case {p[1]}: {p[3]};\n"
+        p[0] = f"case {p[1]}:\n\t{statements}" 
+    p[0] += ";\n\tbreak;\n"
 
 def p_case_label(p):
     """case_label : NUMBER
