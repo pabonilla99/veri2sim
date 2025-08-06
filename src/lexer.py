@@ -1,4 +1,5 @@
 import ply.lex as lex
+import re
 
 # Reserved words list
 reserved = {
@@ -13,9 +14,9 @@ reserved = {
     'end': 'END',
     'if': 'IF',
     'else': 'ELSE',
-    # 'case': 'CASE',
-    # 'endcase': 'ENDCASE',
-    # 'default': 'DEFAULT',
+    'case': 'CASE',
+    'endcase': 'ENDCASE',
+    'default': 'DEFAULT',
     "assign": "ASSIGN",
     # 'initial': 'INITIAL',
     'posedge': 'POSEDGE',
@@ -108,8 +109,24 @@ def t_COMMENT(t):
 
 # Rule for numbers
 def t_NUMBER(t):
-    r"\d+"
-    t.value = int(t.value)
+    r"(\d+)'[bodhBODH][0-9a-fA-F_xXzZ]+|\d+"
+    value = t.value
+    if "'" in value:
+        width, base_and_digits = value.split("'")
+        base = base_and_digits[0].lower()
+        digits = base_and_digits[1:]
+        if base == 'b':
+            t.value = int(digits.replace('_', ''), 2)
+        elif base == 'o':
+            t.value = int(digits.replace('_', ''), 8)
+        elif base == 'd':
+            t.value = int(digits.replace('_', ''), 10)
+        elif base == 'h':
+            t.value = int(digits.replace('_', ''), 16)
+        else:
+            t.value = int(digits.replace('_', ''), 10)
+    else:
+        t.value = int(value)
     return t
 
 

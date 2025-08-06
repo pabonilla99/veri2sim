@@ -337,6 +337,7 @@ def p_statement(p):
     """statement    : assignment SEMI
                     | reg_assignment SEMI
                     | if_block
+                    | case_block
                     | empty""" 
     p[0] = p[1]
 
@@ -374,6 +375,31 @@ def p_else_block_opt(p):
     else:
         p[0] = ""
 
+def p_case_block(p):
+    """case_block : CASE LPAREN expression RPAREN case_item_list ENDCASE"""
+    body = "".join(p[5])
+    p[0] = f"switch ({p[3]}) {{\n{body}}}"
+
+def p_case_item_list(p):
+    """case_item_list : case_item
+                      | case_item_list case_item"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[2]]
+
+def p_case_item(p):
+    """case_item : case_label COLON statement
+                 | DEFAULT COLON statement"""
+    if p[1] == 'default':
+        p[0] = f"default: {p[3]};\n"
+    else:
+        p[0] = f"case {p[1]}: {p[3]};\n"
+
+def p_case_label(p):
+    """case_label : NUMBER
+                  | IDENTIFIER"""
+    p[0] = p[1]
 
 # Error handling
 def p_error(p):
