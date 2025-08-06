@@ -300,7 +300,8 @@ def p_always_block(p):
         p[0] = p[0][:-4] + ") {\n"    
         for stmt in p[4]:
             p[0] += f"{stmt};\n"
-    p[0] += '}\n// --------------'
+        p[0] += '}\n'
+    p[0] += '// --------------'
 
 def p_sensitivity_list(p):
     """sensitivity_list : LPAREN sensitivity_items RPAREN"""
@@ -390,7 +391,9 @@ def p_case_item_list(p):
 
 def p_case_item(p):
     """case_item : case_label COLON statement
-                 | DEFAULT COLON statement"""
+                 | DEFAULT COLON statement
+                 | case_label COLON statement_block
+                 | DEFAULT COLON statement_block"""
     if p[1] == 'default':
         p[0] = f"default: {p[3]};\n"
     else:
