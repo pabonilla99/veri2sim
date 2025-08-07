@@ -12,8 +12,8 @@ class Component():
     def single_inputs(self):
         counter = 0
         for symbol in self.symbols:
-            msb = self.symbols[symbol].msb 
-            lsb = self.symbols[symbol].lsb 
+            msb = self.symbols[symbol].value1 
+            lsb = self.symbols[symbol].value2 
             if self.symbols[symbol].type == 'input':
                 if msb == lsb:                  # single input
                     counter += 1
@@ -24,8 +24,8 @@ class Component():
     def single_outputs(self):
         counter = 0
         for symbol in self.symbols:
-            msb = self.symbols[symbol].msb 
-            lsb = self.symbols[symbol].lsb 
+            msb = self.symbols[symbol].value1 
+            lsb = self.symbols[symbol].value2 
             if type == 'output':
                 if msb == lsb:                  # single output
                     counter += 1
@@ -45,8 +45,8 @@ class Component():
         # -------------------- inputs --------------------
         i = 0
         for symbol in self.symbols:
-            msb = self.symbols[symbol].msb 
-            lsb = self.symbols[symbol].lsb 
+            msb = self.symbols[symbol].value1 
+            lsb = self.symbols[symbol].value2 
             if self.symbols[symbol].type == 'input':
                 if msb == lsb:        # single input
                     pin = ET.SubElement(packageB, "pin", 
@@ -75,8 +75,8 @@ class Component():
         # -------------------- outputs --------------------
         i = 0
         for symbol in self.symbols:
-            msb = self.symbols[symbol].msb 
-            lsb = self.symbols[symbol].lsb 
+            msb = self.symbols[symbol].value1 
+            lsb = self.symbols[symbol].value2 
             if self.symbols[symbol].type == 'output':
                 if msb == lsb:        # single output            
                     pin = ET.SubElement(packageB, "pin", 
@@ -122,8 +122,8 @@ class Component():
         pin_list = ''
         for symbol in self.symbols:
             type = self.symbols[symbol].type 
-            msb = self.symbols[symbol].msb 
-            lsb = self.symbols[symbol].lsb
+            msb = self.symbols[symbol].value1 
+            lsb = self.symbols[symbol].value2
             if type in ['input', 'output'] and msb == lsb: 
                 pin_list += symbol + ','
         
@@ -133,8 +133,8 @@ class Component():
         # -------------------- pin array inputs/outputs --------------------
         for symbol in self.symbols:
             type = self.symbols[symbol].type 
-            msb = self.symbols[symbol].msb 
-            lsb = self.symbols[symbol].lsb 
+            msb = self.symbols[symbol].value1 
+            lsb = self.symbols[symbol].value2 
             if type in ['input', 'output'] and msb != lsb:        # pin array
                 ioport = ET.SubElement(iou, "ioport", 
                                        name=f"{symbol}Port", 
@@ -156,8 +156,8 @@ class Component():
             # -------------------- inputs and outputs --------------------
             for symbol in self.symbols:
                 type = self.symbols[symbol].type 
-                msb = self.symbols[symbol].msb 
-                lsb = self.symbols[symbol].lsb
+                msb = self.symbols[symbol].value1 
+                lsb = self.symbols[symbol].value2
                 if type in ['input', 'output']:
                     if msb == lsb: 
                         f.write(f'IoPin@ {symbol}Pin = component.getPin("{symbol}");\n')
@@ -167,8 +167,8 @@ class Component():
             # -------------------- global variables and functions --------------------
             f.write('\n// ___global_definitions___')
             for symbol in self.symbols:
-                msb = self.symbols[symbol].msb 
-                lsb = self.symbols[symbol].lsb
+                msb = self.symbols[symbol].value1 
+                lsb = self.symbols[symbol].value2
                 if self.symbols[symbol].type == 'wire':
                     if msb == lsb: 
                         f.write(f'\nbool {symbol} = false;')
@@ -181,8 +181,8 @@ class Component():
             # -------------------- reset function --------------------
             f.write(f'\n\nvoid reset()\n{{\nprint("{self.name} reset()");\n\n')
             for symbol in self.symbols:
-                msb = self.symbols[symbol].msb 
-                lsb = self.symbols[symbol].lsb
+                msb = self.symbols[symbol].value1 
+                lsb = self.symbols[symbol].value2
                 if self.symbols[symbol].type == 'input':
                     if msb == lsb: 
                         f.write(f'{symbol}Pin.setPinMode(1); // Input\n')

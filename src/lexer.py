@@ -3,6 +3,7 @@ import re
 
 # Reserved words list
 reserved = {
+    'parameter': 'PARAMETER',
     "module": "MODULE",
     "endmodule": "ENDMODULE",
     "input": "INPUT",
