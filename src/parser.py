@@ -11,6 +11,7 @@ class VerilogModule:
 
     def __str__(self):
         out = f"Module:\n\t{self.name}\n\n"
+        print(f"Module: {self.statements}")
         out += "Statements:\n\t" + ''.join(self.statements).replace('\n', '\n\t') + "\n\n"
         out += "Symbols:\n\t" + '\n\t'.join([f'{value}' for _, value in self.symbols.items()])
         return out
@@ -59,6 +60,8 @@ class SymbolTable:
 
 # Create an instance of the symbol table
 symbol_table = SymbolTable()
+
+# initial_commands = ''
 
 
 # Grammar definition
@@ -440,14 +443,10 @@ def p_concat_list(p):
 
 def p_parameter_declaration(p):
     """parameter_declaration : PARAMETER IDENTIFIER EQ expression SEMI"""
-    symbol_table.add_symbol(p[2], 'parameter', p[4])
+    # print(f"parameter_declaration: {p[2]} = {p[4]}")
     param_type = detect_number_type(p[4])
-    if param_type == "Integer":
-        p[0] = f"const int {p[2]} = {p[4]};\n"
-    elif param_type == "Float":
-        p[0] = f"const float {p[2]} = {p[4]};\n"
-    else:
-        p[0] = f"const {p[4]} {p[2]};\n"    # not a number
+    symbol_table.add_symbol(p[2], 'parameter', p[4], param_type)
+    p[0] = ''
 
 # Error handling
 def p_error(p):

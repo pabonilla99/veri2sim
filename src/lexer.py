@@ -1,7 +1,7 @@
 import ply.lex as lex
 import re
 
-# Reserved words list
+# Reserved words listlist
 reserved = {
     'parameter': 'PARAMETER',
     "module": "MODULE",
