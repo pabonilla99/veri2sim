@@ -4,6 +4,7 @@ import re
 # Reserved words listlist
 reserved = {
     'parameter': 'PARAMETER',
+    'localparam': 'LOCALPARAM',
     "module": "MODULE",
     "endmodule": "ENDMODULE",
     "input": "INPUT",

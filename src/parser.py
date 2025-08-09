@@ -445,7 +445,8 @@ def p_concat_list(p):
         p[0] = p[1] + [p[3]]
 
 def p_localparam_declaration(p):
-    """localparam_declaration : PARAMETER IDENTIFIER EQ expression SEMI"""
+    """localparam_declaration   : PARAMETER IDENTIFIER EQ expression SEMI
+                                | LOCALPARAM IDENTIFIER EQ expression SEMI"""
     # print(f"localparam_declaration: {p[2]} = {p[4]}")
     param_type = detect_number_type(p[4])
     symbol_table.add_symbol(p[2], 'parameter', p[4], param_type)
