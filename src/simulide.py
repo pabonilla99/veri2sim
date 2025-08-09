@@ -182,7 +182,7 @@ class Component():
                         f.write(f'IoPort@ {symbol}Port = component.getPort("{symbol}Port");\n')
             
             # -------------------- global variables and functions --------------------
-            f.write('\n')
+            f.write('\nuint temp_uint;\nbool temp_bool;\n')  # float temp_float;\n
             for symbol in self.symbols:
                 msb = self.symbols[symbol].value1 
                 lsb = self.symbols[symbol].value2
