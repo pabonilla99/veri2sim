@@ -121,10 +121,11 @@ def p_port(p):
 
 
 def p_range(p):
-    """range    : LSQUARE NUMBER COLON NUMBER RSQUARE
-                    | empty"""
+    """range    : LSQUARE expression COLON expression RSQUARE
+                | empty"""
+    print(f"range:\t {p[2]} {p[4]}")
     if len(p) == 6:
-        p[0] = [convert_to_number(p[2]), convert_to_number(p[4])]
+        p[0] = [eval(str(p[2])), eval(str(p[4]))]
     else:
         p[0] = None
 
@@ -153,7 +154,7 @@ def p_module_item(p):
                     | identifier_definition
                     | assign_block
                     | always_block
-                    | parameter_declaration"""
+                    | localparam_declaration"""
     p[0] = p[1]
 
 
@@ -224,6 +225,7 @@ def p_expression_binop(p):
                     | expression BITXOR expression
                     | expression LSHIFT expression
                     | expression RSHIFT expression"""
+    print(f"expression_binop: {p[1]} {p[2]} {p[3]}")
     p[0] = f"{p[1]} {p[2]} {p[3]}"
 
 
@@ -270,6 +272,7 @@ def p_expression_number(p):
 
 def p_expression_identifier(p):
     """expression : IDENTIFIER"""
+    print(f"expression_identifier: {p[1]}")
     if p[1] in symbol_table.symbols:
         if symbol_table.symbols[p[1]].type == "input":
             if symbol_table.symbols[p[1]].value1 == symbol_table.symbols[p[1]].value2:
@@ -441,11 +444,12 @@ def p_concat_list(p):
     else:
         p[0] = p[1] + [p[3]]
 
-def p_parameter_declaration(p):
-    """parameter_declaration : PARAMETER IDENTIFIER EQ expression SEMI"""
-    # print(f"parameter_declaration: {p[2]} = {p[4]}")
+def p_localparam_declaration(p):
+    """localparam_declaration : PARAMETER IDENTIFIER EQ expression SEMI"""
+    # print(f"localparam_declaration: {p[2]} = {p[4]}")
     param_type = detect_number_type(p[4])
     symbol_table.add_symbol(p[2], 'parameter', p[4], param_type)
+    globals()[p[2]] = eval(str(p[4]))   # set the parameter as a global variable in Python
     p[0] = ''
 
 # Error handling
