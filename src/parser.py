@@ -66,9 +66,14 @@ symbol_table = SymbolTable()
 
 # Grammar definition
 def p_module(p):
-    """module : MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULE"""
-    p[0] = VerilogModule(p[2])
-    p[0].statements = p[7]["statements"]
+    """module : MODULE IDENTIFIER parameter_port_list LPAREN port_list RPAREN SEMI module_items ENDMODULE
+              | MODULE IDENTIFIER LPAREN port_list RPAREN SEMI module_items ENDMODULE"""
+    if len(p) == 9:
+        p[0] = VerilogModule(p[2])
+        p[0].statements = p[7]["statements"]
+    else:
+        p[0] = VerilogModule(p[2])
+        p[0].statements = p[8]["statements"]
 
     # Add the module to the symbol table
     symbol_table.add_symbol(p[2], "module")
@@ -452,6 +457,27 @@ def p_localparam_declaration(p):
     symbol_table.add_symbol(p[2], 'parameter', p[4], param_type)
     globals()[p[2]] = eval(str(p[4]))   # set the parameter as a global variable in Python
     p[0] = ''
+    
+def p_parameter_port_list(p):
+    """parameter_port_list : POUND LPAREN parameter_port_items RPAREN"""
+    # Puedes guardar los parámetros aquí si lo deseas
+    p[0] = p[3]
+
+def p_parameter_port_items(p):
+    """parameter_port_items : parameter_port_item
+                            | parameter_port_items COMMA parameter_port_item"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
+
+def p_parameter_port_item(p):
+    """parameter_port_item : PARAMETER IDENTIFIER EQ expression"""
+    param_type = detect_number_type(p[4])
+    symbol_table.add_symbol(p[2], 'parameter', p[4], param_type)
+    globals()[p[2]] = eval(str(p[4]))   # set the parameter as a global variable in Python
+    p[0] = ''
+
 
 # Error handling
 def p_error(p):
