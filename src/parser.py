@@ -215,35 +215,29 @@ def p_assignment(p):
 # def p_assignment_concat(p):
 #     """assignment   : LBRACE concat_list RBRACE EQ expression
 #                     | LBRACE concat_list RBRACE LE expression"""
-#     p[0] = f'\ntemp_uint = {p[5]};\n'
-
-#     bit_index = 0
-#     print(f"assignment_concat: {p[2]} : {type(p[2])}")
 #     for identifier in list(reversed(p[2])):
 #         if identifier in symbol_table.symbols:  # identifier in symbol table
-#             n_bits = symbol_table.symbols[identifier].value1 - symbol_table.symbols[identifier].value2 + 1
-#             mask = '0b' + '0'*(64 - n_bits) + '1'*n_bits
-#             p[0] += f"\t({identifier}Pin.getInpState() & {hex(int(mask, 2))}) "
-#             p[0] += f"<< {bit_index} |\n" if bit_index != 0 else f"|\n"
-#         elif "'" in identifier:                 # number with base and bits
-#             n_bits, _ = identifier.split("'")    
-#             mask = '0b' + '0'*(64 - n_bits) + '1'*n_bits
-#             p[0] += f"\t({convert_to_number(identifier)} & {hex(int(mask, 2))}) "
-#             p[0] += f"<< {bit_index} |\n" if bit_index != 0 else f"|\n"
-#         else:                                   # identifier not in symbol table
-#             print(f"Warning: Identifier {identifier} not found in symbol table.")
+#             msb = symbol_table.symbols[identifier].value1
+#             lsb = symbol_table.symbols[identifier].value2
+#             n_bits = msb - lsb + 1
+#             if symbol_table.symbols[identifier].type == "input":
+#                 if msb == lsb:  # single bit input
+#                     var = f"{identifier}Pin.getInpState()"
+#                 else:           # multi-bit input
+#                     var = f"{identifier}Port.getInpState()"
+#             else:
+#                 var = f"{identifier}"
+#         elif "'" in identifier:             # number with base and bits
+#             nb, _ = identifier.split("'")    
+#             n_bits = int(nb)
+#             var = f"{convert_to_number(identifier)}"
+#         else:                               # identifier not in symbol table
+#             print(f"Warning: Identifier {identifier} not found in symbol table, or number without base.")
+#         mask = '0b' + '0'*(64 - n_bits) + '1'*n_bits
+#         p[0] += f"\t({var} & {hex(int(mask, 2))}) "
+#         p[0] += f"<< {bit_index} |\n" if bit_index != 0 else f"|\n"
 #         bit_index += n_bits
 #     p[0] = p[0][:-3] + "\n"
-
-    # # print(f"reg_assignment: {p[1]} = {p[3]}")
-    # if p[1] in symbol_table.symbols:
-    #     if symbol_table.symbols[p[1]].type == "output":  # output <= statement
-    #         if symbol_table.symbols[p[1]].value1 == symbol_table.symbols[p[1]].value2:
-    #             p[0] = f"{p[1]}Pin.setOutState({p[3]})"
-    #         else:
-    #             p[0] = f"{p[1]}Port.setOutState({p[3]})"
-    #     else:  # wire <= statement
-    #         p[0] = f"{p[1]} = {p[3]}"
 
 
 def p_expression_binop(p):
@@ -442,14 +436,6 @@ def p_number_or_id(p):
     """number_or_id : NUMBER
                     | IDENTIFIER"""
     p[0] = p[1]
-
-
-        # if symbol_table.symbols[p[1]].type == "output":  # output <= statement
-        #     if symbol_table.symbols[p[1]].value1 == symbol_table.symbols[p[1]].value2:
-        #         p[0] = f"{p[1]}Pin.setOutState({p[3]})"
-        #     else:
-        #         p[0] = f"{p[1]}Port.setOutState({p[3]})"
-
 
 def p_expression_concat(p):
     """expression : LBRACE concat_list RBRACE"""
