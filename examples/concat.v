@@ -1,5 +1,5 @@
 module Concatenation(
-    input [1:0] a,  // Entrada de 4 bits
+    input [1:0] a,  // Entrada de 2 bits
     input [3:0] b,  // Entrada de 4 bits
     output [7:0] result // Salida de 8 bits (concatenación de a y b)
 );
