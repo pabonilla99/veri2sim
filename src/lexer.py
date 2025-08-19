@@ -1,25 +1,28 @@
 import ply.lex as lex
+import re
 
-# Reserved words list
+# Reserved words listlist
 reserved = {
+    'parameter': 'PARAMETER',
+    'localparam': 'LOCALPARAM',
     "module": "MODULE",
     "endmodule": "ENDMODULE",
     "input": "INPUT",
     "output": "OUTPUT",
     "wire": "WIRE",
-    # 'reg': 'REG',
-    # 'always': 'ALWAYS',
-    # 'begin': 'BEGIN',
-    # 'end': 'END',
-    # 'if': 'IF',
-    # 'else': 'ELSE',
-    # 'case': 'CASE',
-    # 'endcase': 'ENDCASE',
-    # 'default': 'DEFAULT',
+    'reg': 'REG',
+    'always': 'ALWAYS',
+    'begin': 'BEGIN',
+    'end': 'END',
+    'if': 'IF',
+    'else': 'ELSE',
+    'case': 'CASE',
+    'endcase': 'ENDCASE',
+    'default': 'DEFAULT',
     "assign": "ASSIGN",
     # 'initial': 'INITIAL',
-    # 'posedge': 'POSEDGE',
-    # 'negedge': 'NEGEDGE',
+    'posedge': 'POSEDGE',
+    'negedge': 'NEGEDGE',
     # 'for': 'FOR',
     # 'while': 'WHILE',
     # 'repeat': 'REPEAT',
@@ -28,6 +31,7 @@ reserved = {
     # 'endfunction': 'ENDFUNCTION',
     # 'task': 'TASK',
     # 'endtask': 'ENDTASK'
+    'or': 'OR_KW',
 }
 
 # Tokens list
@@ -40,8 +44,8 @@ tokens = [
     "DIVIDE",
     "LPAREN",
     "RPAREN",
-    # 'LBRACE',
-    # 'RBRACE',
+    'LBRACE',
+    'RBRACE',
     "SEMI",
     "COMMA",
     "EQ",
@@ -63,6 +67,8 @@ tokens = [
     "COLON",
     "RSQUARE",
     "LSQUARE",
+    "AT",     
+    "POUND",     
 ] + list(reserved.values())
 
 # Regular expression rules for simple tokens
@@ -72,8 +78,8 @@ t_TIMES = r"\*"
 t_DIVIDE = r"/"
 t_LPAREN = r"\("
 t_RPAREN = r"\)"
-# t_LBRACE = r'\{'
-# t_RBRACE = r'\}'
+t_LBRACE = r'\{'
+t_RBRACE = r'\}'
 t_SEMI = r";"
 t_COMMA = r","
 t_EQ = r"="
@@ -95,6 +101,8 @@ t_RSHIFT = r">>"
 t_COLON = r":"
 t_RSQUARE = r"\]"
 t_LSQUARE = r"\["
+t_AT = r"@"
+t_POUND = r"\#"
 
 
 # Rule to ignore Verilog comments
@@ -105,8 +113,24 @@ def t_COMMENT(t):
 
 # Rule for numbers
 def t_NUMBER(t):
-    r"\d+"
-    t.value = int(t.value)
+    r"(\d+)'[bodhBODH][0-9a-fA-F_xXzZ]+|\d+"
+    # value = t.value
+    # if "'" in value:
+    #     width, base_and_digits = value.split("'")
+    #     base = base_and_digits[0].lower()
+    #     digits = base_and_digits[1:]
+    #     if base == 'b':
+    #         t.value = int(digits.replace('_', ''), 2)
+    #     elif base == 'o':
+    #         t.value = int(digits.replace('_', ''), 8)
+    #     elif base == 'd':
+    #         t.value = int(digits.replace('_', ''), 10)
+    #     elif base == 'h':
+    #         t.value = int(digits.replace('_', ''), 16)
+    #     else:
+    #         t.value = int(digits.replace('_', ''), 10)
+    # else:
+    #     t.value = int(value)
     return t
 
 

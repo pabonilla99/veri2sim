@@ -64,6 +64,7 @@ if args.command == "compile":
 
     # Generate the custom output
     if result:
+        print("\n-------------------- Parsing Result --------------------")
         print(result)
     else:
         print("Error analyzing the Verilog module.")
@@ -76,4 +77,5 @@ if args.command == "compile":
     component.create_package()
     component.create_mcu()
     component.create_script()
+    component.format_script()
     print("\nCompilation completed.")

@@ -53,3 +53,5 @@ Thumbs.db
 src/parsetab.py
 src/parser.out
 src/__pycache__/
+
+/.luarc.json
